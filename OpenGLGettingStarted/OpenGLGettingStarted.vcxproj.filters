@@ -24,12 +24,18 @@
     <ClCompile Include="AbstractGraphicsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GlfwGraphicsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GraphicsStructures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AbstractGraphicsWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlfwGraphicsWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
