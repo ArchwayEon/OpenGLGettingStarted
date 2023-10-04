@@ -141,11 +141,13 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlfwGraphicsWindow.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="OpenGLGraphicsEnvironment.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsWindow.h" />
     <ClInclude Include="GlfwGraphicsWindow.h" />
     <ClInclude Include="GraphicsStructures.h" />
+    <ClInclude Include="OpenGLGraphicsEnvironment.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
