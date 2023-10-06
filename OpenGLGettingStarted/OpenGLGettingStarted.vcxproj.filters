@@ -36,7 +36,7 @@
     <ClCompile Include="OpenGLGraphicsObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AbstractVertexBuffer.cpp">
+    <ClCompile Include="VertexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
@@ -65,7 +65,7 @@
     <ClInclude Include="OpenGLGraphicsObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractVertexBuffer.h">
+    <ClInclude Include="VertexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">

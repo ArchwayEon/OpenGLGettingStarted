@@ -139,7 +139,7 @@
   <ItemGroup>
     <ClCompile Include="AbstractGraphicsObject.cpp" />
     <ClCompile Include="AbstractGraphicsWindow.cpp" />
-    <ClCompile Include="AbstractVertexBuffer.cpp" />
+    <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlfwGraphicsWindow.cpp" />
     <ClCompile Include="Logger.cpp" />
@@ -151,7 +151,7 @@
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsObject.h" />
     <ClInclude Include="AbstractGraphicsWindow.h" />
-    <ClInclude Include="AbstractVertexBuffer.h" />
+    <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="GlfwGraphicsWindow.h" />
     <ClInclude Include="GraphicsStructures.h" />
     <ClInclude Include="Logger.h" />
