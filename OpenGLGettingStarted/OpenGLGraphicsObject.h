@@ -9,13 +9,13 @@ class OpenGLGraphicsObject :
 {
 private:
     GLuint m_vaoId, m_vboId;
-    GLsizei m_arraySize;
+    GLsizei m_numberOfVertices;
     std::unique_ptr<Vertex[]> m_vertices;
 
 public:
     ~OpenGLGraphicsObject();
     void SetVertices(std::unique_ptr<Vertex[]> vertices, GLsizei size);
-    void Setup();
+    void CreateBuffers();
     void Render(unsigned int shaderProgramId);
 };
 

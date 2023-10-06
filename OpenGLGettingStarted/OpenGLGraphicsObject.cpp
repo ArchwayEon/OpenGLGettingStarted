@@ -5,13 +5,13 @@ OpenGLGraphicsObject::~OpenGLGraphicsObject()
 	glDeleteVertexArrays(1, &m_vaoId);
 }
 
-void OpenGLGraphicsObject::SetVertices(std::unique_ptr<Vertex[]> vertices, GLsizei size)
+void OpenGLGraphicsObject::SetVertices(std::unique_ptr<Vertex[]> vertices, GLsizei numberOfVertices)
 {
 	m_vertices = std::move(vertices);
-	m_arraySize = size;
+	m_numberOfVertices = numberOfVertices;
 }
 
-void OpenGLGraphicsObject::Setup()
+void OpenGLGraphicsObject::CreateBuffers()
 {
 	glGenVertexArrays(1, &m_vaoId);
 	glBindVertexArray(m_vaoId);
@@ -21,7 +21,7 @@ void OpenGLGraphicsObject::Setup()
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboId);
 	// Allocate memory in the GPU for the buffer bound to the binding target and then
 	// copy the data
-	glBufferData(GL_ARRAY_BUFFER, m_arraySize * sizeof(Vertex), m_vertices.get(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_numberOfVertices * sizeof(Vertex), m_vertices.get(), GL_STATIC_DRAW);
 	// Good practice to cleanup by unbinding 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -37,7 +37,7 @@ void OpenGLGraphicsObject::Render(unsigned int shaderProgramId)
 	// Positions
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
-		0,
+		0,              // Location
 		3,              // Each position has 3 components
 		GL_FLOAT,       // Each component is a 32-bit floating point value
 		GL_FALSE,
@@ -47,14 +47,14 @@ void OpenGLGraphicsObject::Render(unsigned int shaderProgramId)
 	// Colors
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(
-		1,
+		1,                          // Location
 		3,                          // Each color has 3 components
 		GL_FLOAT,                   // Each component is a 32-bit floating point value
 		GL_FALSE,
 		sizeof(Vertex),             // The number of bytes to the next color
 		(void*)(sizeof(GLfloat) * 3) // Byte offset of the first color in the array
 	);
-	glDrawArrays(GL_TRIANGLES, 0, m_arraySize);
+	glDrawArrays(GL_TRIANGLES, 0, m_numberOfVertices);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);

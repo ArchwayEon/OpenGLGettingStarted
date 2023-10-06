@@ -13,9 +13,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_ LPWSTR    lpCmdLine,
     _In_ int       nCmdShow)
 {
-    auto glfwWindow = make_shared<GlfwGraphicsWindow>("My Graphics Window");
-    auto oglEnvironment = make_unique<OpenGLGraphicsEnvironment>();
+    Logger logger;
+    auto oglEnvironment = make_unique<OpenGLGraphicsEnvironment>(logger);
     oglEnvironment->SetVersion(4, 6);
+    auto glfwWindow = make_shared<GlfwGraphicsWindow>("My Graphics Window");
     oglEnvironment->SetGraphicsWindow(glfwWindow);
     oglEnvironment->Initialize();
     oglEnvironment->Run();
