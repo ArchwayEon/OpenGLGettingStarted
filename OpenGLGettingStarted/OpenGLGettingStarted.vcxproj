@@ -137,26 +137,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractGraphicsObject.cpp" />
     <ClCompile Include="AbstractGraphicsWindow.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlfwGraphicsWindow.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="OpenGLGraphicsEnvironment.cpp" />
-    <ClCompile Include="OpenGLGraphicsObject.cpp" />
+    <ClCompile Include="GraphicsObject.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractGraphicsObject.h" />
     <ClInclude Include="AbstractGraphicsWindow.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="GlfwGraphicsWindow.h" />
     <ClInclude Include="GraphicsStructures.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="OpenGLGraphicsEnvironment.h" />
-    <ClInclude Include="OpenGLGraphicsObject.h" />
+    <ClInclude Include="GraphicsObject.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

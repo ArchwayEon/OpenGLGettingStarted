@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "GlfwGraphicsWindow.h"
-#include "OpenGLGraphicsObject.h"
+#include "GraphicsObject.h"
 #include "Shader.h"
 
 class OpenGLGraphicsEnvironment
@@ -13,7 +13,7 @@ protected:
 	std::unique_ptr<Shader> m_shader;
 
 	GLuint m_shaderProgram;
-	std::unique_ptr<OpenGLGraphicsObject> m_triangle;
+	std::unique_ptr<GraphicsObject> m_triangle;
 
 public:
 	OpenGLGraphicsEnvironment(Logger& logger);

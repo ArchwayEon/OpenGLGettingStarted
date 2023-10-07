@@ -2,7 +2,7 @@
 #include <glad/glad.h> 
 #include <GLFW/glfw3.h>
 #include "OpenGLGraphicsEnvironment.h"
-#include "OpenGLGraphicsObject.h"
+#include "GraphicsObject.h"
 
 OpenGLGraphicsEnvironment::OpenGLGraphicsEnvironment(Logger& logger) : m_logger(logger)
 {
@@ -36,14 +36,14 @@ void OpenGLGraphicsEnvironment::Initialize()
 
     SetUpShaders();
 
-    m_triangle = make_unique<OpenGLGraphicsObject>();
-    m_triangle->AddVertexData(3, 0.0f, 0.5f, 0.0f);
-    m_triangle->AddVertexData(3, 1.0f, 0.0f, 0.0f);
-    m_triangle->AddVertexData(3, -0.5f, -0.5f, 0.0f);
-    m_triangle->AddVertexData(3, 0.0f, 0.0f, 1.0f);
-    m_triangle->AddVertexData(3, 0.5f, -0.5f, 0.0f);
-    m_triangle->AddVertexData(3, 0.0f, 1.0f, 0.0f);
-    m_triangle->SetNumberOfVertices(3);
+    m_triangle = make_unique<GraphicsObject>();
+    m_triangle->mesh.AddVertexData(3, 0.0f, 0.5f, 0.0f);
+    m_triangle->mesh.AddVertexData(3, 1.0f, 0.0f, 0.0f);
+    m_triangle->mesh.AddVertexData(3, -0.5f, -0.5f, 0.0f);
+    m_triangle->mesh.AddVertexData(3, 0.0f, 0.0f, 1.0f);
+    m_triangle->mesh.AddVertexData(3, 0.5f, -0.5f, 0.0f);
+    m_triangle->mesh.AddVertexData(3, 0.0f, 1.0f, 0.0f);
+    m_triangle->mesh.SetNumberOfVertices(3);
     m_triangle->CreateBuffers();
 }
 
