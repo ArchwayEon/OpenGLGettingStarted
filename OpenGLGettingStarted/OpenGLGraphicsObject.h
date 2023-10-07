@@ -3,19 +3,24 @@
 #include <glad/glad.h>
 #include "AbstractGraphicsObject.h"
 #include "GraphicsStructures.h"
+#include "VertexBuffer.h"
 
 class OpenGLGraphicsObject :
     public AbstractGraphicsObject
 {
 private:
-    GLuint m_vaoId, m_vboId;
+    GLuint m_vaoId;
     GLsizei m_numberOfVertices;
-    std::unique_ptr<Vertex[]> m_vertices;
+    std::vector<float> m_vertexData;
+
+public:
+    VertexBuffer vertexBuffer;
 
 public:
     ~OpenGLGraphicsObject();
-    void SetVertices(std::unique_ptr<Vertex[]> vertices, GLsizei size);
+    void SetNumberOfVertices(int numberOfVertices) { m_numberOfVertices = numberOfVertices; }
     void CreateBuffers();
     void Render(unsigned int shaderProgramId);
+    void AddVertexData(int count, ...);
 };
 

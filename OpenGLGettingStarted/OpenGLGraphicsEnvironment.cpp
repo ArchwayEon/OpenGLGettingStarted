@@ -37,28 +37,13 @@ void OpenGLGraphicsEnvironment::Initialize()
     SetUpShaders();
 
     m_triangle = make_unique<OpenGLGraphicsObject>();
-    auto vertices = make_unique<Vertex[]>(3);
-    vertices[0].x = 0.0f;
-    vertices[0].y = 0.5f;
-    vertices[0].z = 0.0f;
-    vertices[0].red = 1.0f;
-    vertices[0].green = 0.0f;
-    vertices[0].blue = 0.0f;
-
-    vertices[1].x = -0.5f;
-    vertices[1].y = -0.5f;
-    vertices[1].z = 0.0f;
-    vertices[1].red = 0.0f;
-    vertices[1].green = 0.0f;
-    vertices[1].blue = 1.0f;
-
-    vertices[2].x = 0.5f;
-    vertices[2].y = -0.5f;
-    vertices[2].z = 0.0f;
-    vertices[2].red = 0.0f;
-    vertices[2].green = 1.0f;
-    vertices[2].blue = 0.0f;
-    m_triangle->SetVertices(std::move(vertices), 3);
+    m_triangle->AddVertexData(3, 0.0f, 0.5f, 0.0f);
+    m_triangle->AddVertexData(3, 1.0f, 0.0f, 0.0f);
+    m_triangle->AddVertexData(3, -0.5f, -0.5f, 0.0f);
+    m_triangle->AddVertexData(3, 0.0f, 0.0f, 1.0f);
+    m_triangle->AddVertexData(3, 0.5f, -0.5f, 0.0f);
+    m_triangle->AddVertexData(3, 0.0f, 1.0f, 0.0f);
+    m_triangle->SetNumberOfVertices(3);
     m_triangle->CreateBuffers();
 }
 

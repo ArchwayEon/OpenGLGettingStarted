@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <memory>
+#include "GraphicsStructures.h"
 
 class VertexBuffer
 {
@@ -13,8 +15,14 @@ class VertexBuffer
 	};
 protected:
 	std::vector<VertexAttribute> m_attributes;
+	unsigned int m_vboId;
 
 public:
-	void AddVertexAttribute(unsigned int index, int numberOfComponents, int type, int isNormalized, unsigned int bytesToNext, int offset);
+	void Generate();
+	void AddVertexAttribute(
+		unsigned int index, int numberOfComponents, int type, int isNormalized, unsigned int bytesToNext, unsigned long long offset);
+	void EnableAttributes();
+	void StaticAllocate(std::vector<float> vertexData);
+	void DisableAttributes();
 };
 
