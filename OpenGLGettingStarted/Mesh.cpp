@@ -16,26 +16,29 @@ void Mesh::AddVertexData(int count, ...)
 	va_end(args);
 }
 
+void Mesh::AddIndexData(int count, ...)
+{
+	va_list args;
+	va_start(args, count);
+
+	while (count > 0) {
+		m_indexData.push_back(static_cast<unsigned short int>(va_arg(args, int)));
+		count--;
+	}
+
+	va_end(args);
+}
+
 void Mesh::Render(unsigned int shaderProgramId)
 {
-	glUseProgram(shaderProgramId);
-
 	vertexBuffer.EnableAttributes();
-	glDrawArrays(GL_TRIANGLES, 0, m_numberOfVertices);
+	glDrawElements(GL_TRIANGLES, m_numberOfIndices, GL_UNSIGNED_SHORT, 0);
 	vertexBuffer.DisableAttributes();
-
-	glUseProgram(0);
-	glBindVertexArray(0);
 }
 
 void Mesh::CreateBuffers()
 {
 	vertexBuffer.Generate();
-	vertexBuffer.StaticAllocate(m_vertexData);
-	unsigned int size3floats = sizeof(float) * 3;
-	unsigned int size6floats = sizeof(float) * 6;
-	// Positions
-	vertexBuffer.AddVertexAttribute(0, 3, GL_FLOAT, GL_FALSE, size6floats, 0);
-	// Color
-	vertexBuffer.AddVertexAttribute(1, 3, GL_FLOAT, GL_FALSE, size6floats, size3floats);
+	vertexBuffer.StaticAllocateVertices(m_vertexData);
+	vertexBuffer.StaticAllocateIndices(m_indexData);
 }

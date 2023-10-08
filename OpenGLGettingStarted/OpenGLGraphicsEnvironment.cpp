@@ -44,6 +44,15 @@ void OpenGLGraphicsEnvironment::Initialize()
     m_triangle->mesh.AddVertexData(3, 0.5f, -0.5f, 0.0f);
     m_triangle->mesh.AddVertexData(3, 0.0f, 1.0f, 0.0f);
     m_triangle->mesh.SetNumberOfVertices(3);
+    m_triangle->mesh.AddIndexData(3, 0, 1, 2);
+    m_triangle->mesh.SetNumberOfIndices(3);
+
+    unsigned int size3floats = sizeof(float) * 3;
+    unsigned int size6floats = sizeof(float) * 6;
+    // Positions
+    m_triangle->mesh.vertexBuffer.AddVertexAttribute(0, 3, GL_FLOAT, GL_FALSE, size6floats, 0);
+    // Color
+    m_triangle->mesh.vertexBuffer.AddVertexAttribute(1, 3, GL_FLOAT, GL_FALSE, size6floats, size3floats);
     m_triangle->CreateBuffers();
 }
 

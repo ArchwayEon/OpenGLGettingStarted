@@ -16,13 +16,16 @@ class VertexBuffer
 protected:
 	std::vector<VertexAttribute> m_attributes;
 	unsigned int m_vboId;
+	unsigned int m_iboId;
 
 public:
+	VertexBuffer() : m_attributes{}, m_vboId(0), m_iboId() {}
 	void Generate();
 	void AddVertexAttribute(
 		unsigned int index, int numberOfComponents, int type, int isNormalized, unsigned int bytesToNext, unsigned long long offset);
 	void EnableAttributes();
-	void StaticAllocate(std::vector<float> vertexData);
+	void StaticAllocateVertices(std::vector<float> vertexData);
+	void StaticAllocateIndices(std::vector<unsigned short int> indexData);
 	void DisableAttributes();
 };
 
