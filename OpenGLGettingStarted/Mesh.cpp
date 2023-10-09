@@ -25,14 +25,12 @@ void Mesh::AddIndexData(int count, ...)
 {
 	va_list args;
 	va_start(args, count);
-
+	m_numberOfIndices += count;
 	while (count > 0) {
 		m_indexData.push_back(static_cast<unsigned short int>(va_arg(args, int)));
 		count--;
 	}
-
 	va_end(args);
-	m_numberOfIndices += count;
 }
 
 void Mesh::AddTriangleIndices(unsigned short int idx1, unsigned short int idx2, unsigned short int idx3)
