@@ -79,8 +79,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     triangleMesh->vertexBuffer->AddVertexAttribute(
         { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats });
 
-    triangleMesh->AddIndexData(3, 0, 1, 2);
-    triangleMesh->SetNumberOfIndices(3);
+    triangleMesh->AddTriangleIndices(0, 1, 2);
     triangleMesh->indexBuffer = std::make_unique<IndexBuffer>();
 
     m_allObjects["triangle"]->SetMesh(std::move(triangleMesh));

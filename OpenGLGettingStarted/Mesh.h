@@ -24,6 +24,7 @@ public:
 	void AddVertexData(int count, ...);
 	void AddVertexAttribute(const VertexAttribute& attr);
 	void AddIndexData(int count, ...);
+	void AddTriangleIndices(unsigned short int idx1, unsigned short int idx2, unsigned short int idx3);
 	void Render() const;
 	void AllocateStaticBuffers();
 };
