@@ -34,7 +34,7 @@ void Mesh::AddIndexData(int count, ...)
 	va_end(args);
 }
 
-void Mesh::Render(unsigned int shaderProgramId)
+void Mesh::Render() const
 {
 	vertexBuffer->EnableAttributes();
 	indexBuffer->Select();

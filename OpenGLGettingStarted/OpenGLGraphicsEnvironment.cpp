@@ -5,7 +5,8 @@
 #include "GraphicsObject.h"
 #include "VertexArray.h"
 
-OpenGLGraphicsEnvironment::OpenGLGraphicsEnvironment(Logger& logger) : m_logger(logger)
+OpenGLGraphicsEnvironment::OpenGLGraphicsEnvironment(Logger& logger) : 
+    m_logger(logger), m_majorVersion(4), m_minorVersion(6)
 {
 }
 
@@ -35,10 +36,11 @@ void OpenGLGraphicsEnvironment::Initialize()
         throw "Failed to initialize GLAD.";
     }
 
-    SetUpShaders();
+    LoadShaders();
 
     m_triangle = make_unique<GraphicsObject>();
     m_triangle->vertexArray = std::make_shared<VertexArray>();
+    m_triangle->shader = m_shaders["basic"];
 
     std::unique_ptr<Mesh> triangleMesh = std::make_unique<Mesh>();
     triangleMesh->AddVertexData(3, 0.0f, 0.5f, 0.0f);
@@ -64,7 +66,7 @@ void OpenGLGraphicsEnvironment::Initialize()
     triangleMesh->indexBuffer = std::make_unique<IndexBuffer>();
 
     m_triangle->SetMesh(std::move(triangleMesh));
-    m_triangle->AllocateMeshes();
+    m_triangle->AllocateStaticBuffers();
 }
 
 void OpenGLGraphicsEnvironment::Run()
@@ -74,14 +76,19 @@ void OpenGLGraphicsEnvironment::Run()
     while (m_window->IsTimeToClose() == false) {
         m_window->CheckInputs();
         m_window->Clear();
-        m_triangle->Render(m_shaderProgram);
+        m_triangle->Render();
         m_window->NextFrame();
     }
 }
 
-void OpenGLGraphicsEnvironment::SetUpShaders()
+void OpenGLGraphicsEnvironment::LoadShaders()
 {
-    m_shader = make_unique<Shader>(m_logger);
+    CreateBasicShader();
+}
+
+void OpenGLGraphicsEnvironment::CreateBasicShader()
+{
+    auto shader = make_shared<Shader>(m_logger);
     std::string vertexSourceCode =
         "#version 400\n"\
         "layout(location = 0) in vec3 position;\n"\
@@ -101,6 +108,7 @@ void OpenGLGraphicsEnvironment::SetUpShaders()
         "   color = fragColor;\n"\
         "}\n";
 
-    m_shaderProgram = m_shader->Create(vertexSourceCode, fragmentSourceCode);
+   shader->Create(vertexSourceCode, fragmentSourceCode);
+   m_shaders["basic"] = shader;
 }
 

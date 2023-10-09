@@ -1,7 +1,8 @@
 #include "Shader.h"
 #include <glad/glad.h>
 
-Shader::Shader(Logger& logger) : m_logger(logger)
+Shader::Shader(Logger& logger) : 
+    m_logger(logger), m_programId(0)
 {
 }
 
@@ -11,10 +12,15 @@ int Shader::Create(const std::string& vertexSourceCode, const std::string& fragm
     if (vertexShaderId == 0) m_logger.Log("Could not create vertex shader!");
     unsigned int fragmentShaderId = Compile(GL_FRAGMENT_SHADER, fragmentSourceCode);
     if (fragmentShaderId == 0) m_logger.Log("Could not create fragment shader!");
-    unsigned int shaderProgram = Link(vertexShaderId, fragmentShaderId);
+    m_programId = Link(vertexShaderId, fragmentShaderId);
     glDeleteShader(vertexShaderId);
     glDeleteShader(fragmentShaderId);
-    return shaderProgram;
+    return m_programId;
+}
+
+void Shader::Select() const
+{
+    glUseProgram(m_programId);
 }
 
 int Shader::Compile(unsigned int type, const std::string& sourceCode)

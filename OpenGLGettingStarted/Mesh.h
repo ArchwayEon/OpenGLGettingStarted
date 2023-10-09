@@ -24,7 +24,7 @@ public:
 	void AddVertexData(int count, ...);
 	void AddVertexAttribute(const VertexAttribute& attr);
 	void AddIndexData(int count, ...);
-	void Render(unsigned int shaderProgramId);
+	void Render() const;
 	void AllocateStaticBuffers();
 };
 

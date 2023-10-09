@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <map>
 #include "GlfwGraphicsWindow.h"
 #include "GraphicsObject.h"
 #include "Shader.h"
@@ -10,9 +11,10 @@ protected:
 	Logger& m_logger;
 	int m_majorVersion, m_minorVersion;
 	std::shared_ptr<GlfwGraphicsWindow> m_window;
-	std::unique_ptr<Shader> m_shader;
+	//std::shared_ptr<Shader> m_shader;
+	std::map<std::string,std::shared_ptr<Shader>> m_shaders;
 
-	GLuint m_shaderProgram;
+	//GLuint m_shaderProgram;
 	std::unique_ptr<GraphicsObject> m_triangle;
 
 public:
@@ -23,6 +25,7 @@ public:
 	void Run();
 
 private:
-	void SetUpShaders();
+	void LoadShaders();
+	void CreateBasicShader();
 };
 

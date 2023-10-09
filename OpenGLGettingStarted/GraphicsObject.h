@@ -4,6 +4,7 @@
 #include "GraphicsStructures.h"
 #include "Mesh.h"
 #include "VertexArray.h"
+#include "Shader.h"
 
 class GraphicsObject
 {
@@ -12,12 +13,12 @@ protected:
 
 public:
     std::shared_ptr<VertexArray> vertexArray;
+    std::shared_ptr<Shader> shader;
 
 public:
     GraphicsObject();
     ~GraphicsObject();
     void SetMesh(std::unique_ptr<Mesh> mesh);
-    void AllocateMeshes();
-    void Render(unsigned int shaderProgramId);
+    void AllocateStaticBuffers();
+    void Render() const;
 };
-

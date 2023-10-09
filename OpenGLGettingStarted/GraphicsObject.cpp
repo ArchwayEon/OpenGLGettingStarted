@@ -14,19 +14,15 @@ void GraphicsObject::SetMesh(std::unique_ptr<Mesh> mesh)
 	m_mesh = std::move(mesh);
 }
 
-void GraphicsObject::AllocateMeshes()
+void GraphicsObject::AllocateStaticBuffers()
 {
 	m_mesh->AllocateStaticBuffers();
 }
 
-void GraphicsObject::Render(unsigned int shaderProgramId)
+void GraphicsObject::Render() const
 {
 	vertexArray->Select();
-	glUseProgram(shaderProgramId);
-
-	m_mesh->Render(shaderProgramId);
-
-	glUseProgram(0);
-	glBindVertexArray(0);
+	shader->Select();
+	m_mesh->Render();
 }
 
