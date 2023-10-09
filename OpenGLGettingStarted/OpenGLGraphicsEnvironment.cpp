@@ -37,6 +37,9 @@ void OpenGLGraphicsEnvironment::Initialize()
 
     SetUpShaders();
 
+    m_triangle = make_unique<GraphicsObject>();
+    m_triangle->vertexArray = std::make_shared<VertexArray>();
+
     std::unique_ptr<Mesh> triangleMesh = std::make_unique<Mesh>();
     triangleMesh->AddVertexData(3, 0.0f, 0.5f, 0.0f);
     triangleMesh->AddVertexData(3, 1.0f, 0.0f, 0.0f);
@@ -46,7 +49,7 @@ void OpenGLGraphicsEnvironment::Initialize()
     triangleMesh->AddVertexData(3, 0.0f, 1.0f, 0.0f);
     triangleMesh->SetNumberOfVertices(3);
     triangleMesh->vertexBuffer = std::make_unique<VertexBuffer>();
-    triangleMesh->vertexBuffer->vertexArray = std::make_shared<VertexArray>();
+    triangleMesh->vertexBuffer->vertexArray = m_triangle->vertexArray;
     unsigned int size6floats = sizeof(float) * 6;
     unsigned long long size3floats = sizeof(float) * 3;
     // Positions
@@ -60,22 +63,8 @@ void OpenGLGraphicsEnvironment::Initialize()
     triangleMesh->SetNumberOfIndices(3);
     triangleMesh->indexBuffer = std::make_unique<IndexBuffer>();
 
-    m_triangle = make_unique<GraphicsObject>();
-    m_triangle->vertexArray = triangleMesh->vertexBuffer->vertexArray;
     m_triangle->SetMesh(std::move(triangleMesh));
     m_triangle->AllocateMeshes();
-    //m_triangle->mesh.AddVertexData(3, 0.0f, 0.5f, 0.0f);
-    //m_triangle->mesh.AddVertexData(3, 1.0f, 0.0f, 0.0f);
-    //m_triangle->mesh.AddVertexData(3, -0.5f, -0.5f, 0.0f);
-    //m_triangle->mesh.AddVertexData(3, 0.0f, 0.0f, 1.0f);
-    //m_triangle->mesh.AddVertexData(3, 0.5f, -0.5f, 0.0f);
-    //m_triangle->mesh.AddVertexData(3, 0.0f, 1.0f, 0.0f);
-    //m_triangle->mesh.SetNumberOfVertices(3);
-    //m_triangle->mesh.AddIndexData(3, 0, 1, 2);
-    //m_triangle->mesh.SetNumberOfIndices(3);
-    //m_triangle->mesh.vertexBuffer.AddVertexAttribute();
-    //m_triangle->mesh.vertexBuffer.AddVertexAttribute();
-    //m_triangle->CreateBuffers();
 }
 
 void OpenGLGraphicsEnvironment::Run()
