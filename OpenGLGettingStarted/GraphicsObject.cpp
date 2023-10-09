@@ -1,24 +1,30 @@
 #include "GraphicsObject.h"
 #include <cstdarg>
 
-GraphicsObject::~GraphicsObject()
+GraphicsObject::GraphicsObject()
 {
-	glDeleteVertexArrays(1, &m_vaoId);
 }
 
-void GraphicsObject::CreateBuffers()
+GraphicsObject::~GraphicsObject()
 {
-	glGenVertexArrays(1, &m_vaoId);
-	glBindVertexArray(m_vaoId);
-	mesh.CreateBuffers();
+}
+
+void GraphicsObject::SetMesh(std::unique_ptr<Mesh> mesh)
+{
+	m_mesh = std::move(mesh);
+}
+
+void GraphicsObject::AllocateMeshes()
+{
+	m_mesh->AllocateStaticBuffers();
 }
 
 void GraphicsObject::Render(unsigned int shaderProgramId)
 {
-	glBindVertexArray(m_vaoId);
+	vertexArray->Select();
 	glUseProgram(shaderProgramId);
 
-	mesh.Render(shaderProgramId);
+	m_mesh->Render(shaderProgramId);
 
 	glUseProgram(0);
 	glBindVertexArray(0);

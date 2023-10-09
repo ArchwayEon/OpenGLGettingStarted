@@ -16,6 +16,11 @@ void Mesh::AddVertexData(int count, ...)
 	va_end(args);
 }
 
+void Mesh::AddVertexAttribute(const VertexAttribute& attr)
+{
+	vertexBuffer->AddVertexAttribute(attr);
+}
+
 void Mesh::AddIndexData(int count, ...)
 {
 	va_list args;
@@ -31,14 +36,14 @@ void Mesh::AddIndexData(int count, ...)
 
 void Mesh::Render(unsigned int shaderProgramId)
 {
-	vertexBuffer.EnableAttributes();
+	vertexBuffer->EnableAttributes();
+	indexBuffer->Select();
 	glDrawElements(GL_TRIANGLES, m_numberOfIndices, GL_UNSIGNED_SHORT, 0);
-	vertexBuffer.DisableAttributes();
+	vertexBuffer->DisableAttributes();
 }
 
-void Mesh::CreateBuffers()
+void Mesh::AllocateStaticBuffers()
 {
-	vertexBuffer.Generate();
-	vertexBuffer.StaticAllocateVertices(m_vertexData);
-	vertexBuffer.StaticAllocateIndices(m_indexData);
+	vertexBuffer->StaticAllocate(m_vertexData);
+	indexBuffer->StaticAllocate(m_indexData);
 }

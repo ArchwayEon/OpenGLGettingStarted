@@ -3,18 +3,21 @@
 #include <glad/glad.h>
 #include "GraphicsStructures.h"
 #include "Mesh.h"
+#include "VertexArray.h"
 
 class GraphicsObject
 {
-private:
-    GLuint m_vaoId;
+protected:
+    std::unique_ptr<Mesh> m_mesh;
 
 public:
-    Mesh mesh;
+    std::shared_ptr<VertexArray> vertexArray;
 
 public:
+    GraphicsObject();
     ~GraphicsObject();
-    void CreateBuffers();
+    void SetMesh(std::unique_ptr<Mesh> mesh);
+    void AllocateMeshes();
     void Render(unsigned int shaderProgramId);
 };
 
