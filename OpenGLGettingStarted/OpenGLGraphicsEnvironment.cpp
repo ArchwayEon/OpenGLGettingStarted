@@ -37,10 +37,28 @@ void OpenGLGraphicsEnvironment::Initialize()
     }
 
     LoadShaders();
+    LoadObjects();
+}
 
-    m_triangle = make_unique<GraphicsObject>();
-    m_triangle->vertexArray = std::make_shared<VertexArray>();
-    m_triangle->shader = m_shaders["basic"];
+void OpenGLGraphicsEnvironment::Run()
+{
+    m_window->SetupFramebufferSizeCallback();
+
+    while (m_window->IsTimeToClose() == false) {
+        m_window->CheckInputs();
+        m_window->Clear();
+        m_currentScene->Render();
+        m_window->NextFrame();
+    }
+}
+
+void OpenGLGraphicsEnvironment::LoadObjects()
+{
+    m_currentScene = make_unique<Scene>();
+
+    m_allObjects["triangle"] = make_shared<GraphicsObject>();
+    m_allObjects["triangle"]->vertexArray = std::make_shared<VertexArray>();
+    m_allObjects["triangle"]->shader = m_shaders["basic"];
 
     std::unique_ptr<Mesh> triangleMesh = std::make_unique<Mesh>();
     triangleMesh->AddVertexData(3, 0.0f, 0.5f, 0.0f);
@@ -51,34 +69,24 @@ void OpenGLGraphicsEnvironment::Initialize()
     triangleMesh->AddVertexData(3, 0.0f, 1.0f, 0.0f);
     triangleMesh->SetNumberOfVertices(3);
     triangleMesh->vertexBuffer = std::make_unique<VertexBuffer>();
-    triangleMesh->vertexBuffer->vertexArray = m_triangle->vertexArray;
+    triangleMesh->vertexBuffer->vertexArray = m_allObjects["triangle"]->vertexArray;
     unsigned int size6floats = sizeof(float) * 6;
     unsigned long long size3floats = sizeof(float) * 3;
     // Positions
     triangleMesh->vertexBuffer->AddVertexAttribute(
-        {0, 3, GL_FLOAT, GL_FALSE, size6floats, 0});
+        { 0, 3, GL_FLOAT, GL_FALSE, size6floats, 0 });
     // Color
     triangleMesh->vertexBuffer->AddVertexAttribute(
-        {1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats});
+        { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats });
 
     triangleMesh->AddIndexData(3, 0, 1, 2);
     triangleMesh->SetNumberOfIndices(3);
     triangleMesh->indexBuffer = std::make_unique<IndexBuffer>();
 
-    m_triangle->SetMesh(std::move(triangleMesh));
-    m_triangle->AllocateStaticBuffers();
-}
+    m_allObjects["triangle"]->SetMesh(std::move(triangleMesh));
+    m_allObjects["triangle"]->AllocateStaticBuffers();
 
-void OpenGLGraphicsEnvironment::Run()
-{
-    m_window->SetupFramebufferSizeCallback();
-
-    while (m_window->IsTimeToClose() == false) {
-        m_window->CheckInputs();
-        m_window->Clear();
-        m_triangle->Render();
-        m_window->NextFrame();
-    }
+    m_currentScene->AddObject("triangle", m_allObjects["triangle"]);
 }
 
 void OpenGLGraphicsEnvironment::LoadShaders()
@@ -90,7 +98,7 @@ void OpenGLGraphicsEnvironment::CreateBasicShader()
 {
     auto shader = make_shared<Shader>(m_logger);
     std::string vertexSourceCode =
-        "#version 400\n"\
+        "#version 460\n"\
         "layout(location = 0) in vec3 position;\n"\
         "layout(location = 1) in vec3 vertexColor;\n"\
         "out vec4 fragColor;\n"\
@@ -100,7 +108,7 @@ void OpenGLGraphicsEnvironment::CreateBasicShader()
         "   fragColor = vec4(vertexColor, 1.0);\n" \
         "}\n";
     std::string fragmentSourceCode =
-        "#version 400\n"\
+        "#version 460\n"\
         "in vec4 fragColor;\n"\
         "out vec4 color;\n"\
         "void main()\n"\

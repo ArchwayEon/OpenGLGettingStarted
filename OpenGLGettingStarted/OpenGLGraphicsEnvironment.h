@@ -4,6 +4,7 @@
 #include "GlfwGraphicsWindow.h"
 #include "GraphicsObject.h"
 #include "Shader.h"
+#include "Scene.h"
 
 class OpenGLGraphicsEnvironment
 {
@@ -11,11 +12,9 @@ protected:
 	Logger& m_logger;
 	int m_majorVersion, m_minorVersion;
 	std::shared_ptr<GlfwGraphicsWindow> m_window;
-	//std::shared_ptr<Shader> m_shader;
 	std::map<std::string,std::shared_ptr<Shader>> m_shaders;
-
-	//GLuint m_shaderProgram;
-	std::unique_ptr<GraphicsObject> m_triangle;
+	std::unique_ptr<Scene> m_currentScene;
+	std::map<std::string, std::shared_ptr<GraphicsObject>> m_allObjects;
 
 public:
 	OpenGLGraphicsEnvironment(Logger& logger);
@@ -25,6 +24,7 @@ public:
 	void Run();
 
 private:
+	void LoadObjects();
 	void LoadShaders();
 	void CreateBasicShader();
 };
