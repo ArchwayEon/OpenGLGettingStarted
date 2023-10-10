@@ -21,14 +21,3 @@ void VertexArray::Unselect() const
 	glBindVertexArray(0);
 }
 
-//void VertexArray::AddBuffer(const VertexBuffer& vb, const IndexBuffer& ib, const VertexAttribute& attr)
-//{
-//	m_vertexBuffers.push_back(vb);
-//	m_indexBuffers.push_back(ib);
-//	m_attributes.push_back(attr);
-//}
-
-//void VertexArray::EnableAttributes() const
-//{
-//
-//}

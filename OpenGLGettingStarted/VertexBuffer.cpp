@@ -37,16 +37,15 @@ void VertexBuffer::EnableAttributes() const
 			attr.isNormalized, attr.bytesToNext, attr.byteOffset
 		);
 	}
-	Unselect();
 }
 
 void VertexBuffer::StaticAllocate(std::vector<float> vertexData)
 {
+	vertexArray->Select();
 	Select();
 	unsigned long long bytesToAllocate = vertexData.size() * sizeof(float);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboId);
 	glBufferData(GL_ARRAY_BUFFER, bytesToAllocate, vertexData.data(), GL_STATIC_DRAW);
-	Unselect();
 }
 
 void VertexBuffer::DisableAttributes() const

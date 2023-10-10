@@ -25,5 +25,5 @@ void IndexBuffer::StaticAllocate(std::vector<unsigned short int> indexData)
 	unsigned long long bytesToAllocate = indexData.size() * sizeof(unsigned short int);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iboId);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, bytesToAllocate, indexData.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

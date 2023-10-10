@@ -111,7 +111,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     m_allObjects["triangle"]->SetMesh(std::move(triangleMesh));
     m_allObjects["triangle"]->AllocateStaticBuffers();
     m_allObjects["triangle"]->shader = m_shaders["basic3d"];
-    m_currentScene->AddObject("triangle", m_allObjects["triangle"]);
+    //m_currentScene->AddObject("triangle", m_allObjects["triangle"]);
 
 
     m_allObjects["flatsurface"] = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f });

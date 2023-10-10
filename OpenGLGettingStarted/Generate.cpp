@@ -4,6 +4,7 @@ std::shared_ptr<GraphicsObject> Generate::FlatSurface(float width, float depth, 
 {
     auto flatSurface = std::make_shared<GraphicsObject>();
     flatSurface->vertexArray = std::make_shared<VertexArray>();
+    flatSurface->vertexArray->Select();
 
     float halfWidth = width / 2;
     float halfDepth = depth / 2;
