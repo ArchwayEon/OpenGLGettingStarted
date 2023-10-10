@@ -16,6 +16,17 @@ void Mesh::AddVertexData(int count, ...)
 	va_end(args);
 }
 
+void Mesh::AddVertex(Position pos, RGB color)
+{
+	m_vertexData.push_back(pos.x);
+	m_vertexData.push_back(pos.y);
+	m_vertexData.push_back(pos.z);
+	m_vertexData.push_back(color.red);
+	m_vertexData.push_back(color.green);
+	m_vertexData.push_back(color.blue);
+	m_numberOfVertices++;
+}
+
 void Mesh::AddVertexAttribute(const VertexAttribute& attr)
 {
 	vertexBuffer->AddVertexAttribute(attr);

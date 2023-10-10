@@ -18,6 +18,7 @@ public:
 	void CheckInputs();
 	void Clear();
 	void NextFrame();
+	void GetWindowSize();
 
 private:
 	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);

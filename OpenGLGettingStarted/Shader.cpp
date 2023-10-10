@@ -1,5 +1,6 @@
 #include "Shader.h"
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(Logger& logger) : 
     m_logger(logger), m_programId(0)
@@ -21,6 +22,12 @@ int Shader::Create(const std::string& vertexSourceCode, const std::string& fragm
 void Shader::Select() const
 {
     glUseProgram(m_programId);
+}
+
+void Shader::SendUniform(const std::string& uniformName, const glm::mat4& mat4) const
+{
+    unsigned int location = glGetUniformLocation(m_programId, uniformName.c_str());
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat4));
 }
 
 int Shader::Compile(unsigned int type, const std::string& sourceCode)

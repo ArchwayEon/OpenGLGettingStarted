@@ -37,7 +37,7 @@ public:
 	//virtual void SwapBuffers() = 0;
 	
 	//virtual int GetKeyState(int key) = 0;
-	//virtual void GetWindowSize() = 0;
+	virtual void GetWindowSize() = 0;
 	virtual float GetAspectRatio() {
 		return m_width / (float)m_height;
 	}

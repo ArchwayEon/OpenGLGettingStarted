@@ -51,6 +51,12 @@ void GlfwGraphicsWindow::CheckInputs()
 	if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(m_window, true);
 	}
+	if (glfwGetKey(m_window, GLFW_KEY_F1) == GLFW_PRESS) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	if (glfwGetKey(m_window, GLFW_KEY_F2) == GLFW_PRESS) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 }
 
 void GlfwGraphicsWindow::Clear()
@@ -68,6 +74,11 @@ void GlfwGraphicsWindow::NextFrame()
 {
 	glfwSwapBuffers(m_window);
 	glfwPollEvents();
+}
+
+void GlfwGraphicsWindow::GetWindowSize()
+{
+	glfwGetWindowSize(m_window, &m_width, &m_height);
 }
 
 void GlfwGraphicsWindow::framebufferSizeCallback(GLFWwindow* window, int width, int height)

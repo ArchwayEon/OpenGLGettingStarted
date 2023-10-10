@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir);$(IncludePath);$(SolutionDir)3rdparty\glfw\include;$(SolutionDir)3rdparty\glad\include</IncludePath>
+    <IncludePath>$(SolutionDir);$(IncludePath);$(SolutionDir)3rdparty\glfw\include;$(SolutionDir)3rdparty\glad\include;$(SolutionDir)3rdparty</IncludePath>
     <LibraryPath>$(SolutionDir)3rdparty\glfw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir);$(IncludePath);$(SolutionDir)3rdparty\glfw\include;$(SolutionDir)3rdparty\glad\include</IncludePath>
+    <IncludePath>$(SolutionDir);$(IncludePath);$(SolutionDir)3rdparty\glfw\include;$(SolutionDir)3rdparty\glad\include;$(SolutionDir)3rdparty</IncludePath>
     <LibraryPath>$(SolutionDir)3rdparty\glfw\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -138,8 +138,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AbstractGraphicsWindow.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Generate.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
@@ -153,8 +156,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractGraphicsWindow.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Generate.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />

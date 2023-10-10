@@ -19,10 +19,13 @@ void GraphicsObject::AllocateStaticBuffers()
 	m_mesh->AllocateStaticBuffers();
 }
 
-void GraphicsObject::Render() const
+void GraphicsObject::Render(std::shared_ptr<Camera> camera) const
 {
 	vertexArray->Select();
 	shader->Select();
+	shader->SendUniform("uProjection", camera->GetProjection());
+	shader->SendUniform("uView", camera->GetView());
+	shader->SendUniform("uWorld", m_mesh->frame.orientation);
 	m_mesh->Render();
 }
 

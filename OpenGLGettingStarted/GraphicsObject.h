@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Camera.h"
 
 class GraphicsObject
 {
@@ -20,5 +21,5 @@ public:
     ~GraphicsObject();
     void SetMesh(std::unique_ptr<Mesh> mesh);
     void AllocateStaticBuffers();
-    void Render() const;
+    void Render(std::shared_ptr<Camera> camera) const;
 };
