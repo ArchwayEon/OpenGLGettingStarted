@@ -135,6 +135,22 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->StaticAllocate(flatSurface->mesh->GetVertexData());
 
     m_renderer->AddVertexBuffer("flatsurfacebuffer", vertexBuffer);
+
+    auto cuboid = Generate::Cuboid(2, 2, 2, { 0.5f, 0.0f, 0.0f });
+    m_allObjects["cuboid"] = cuboid;
+    vertexBuffer = std::make_shared<VertexBuffer>();
+    vertexBuffer->GenerateIndexedBuffer();
+    vertexBuffer->attachedObject = cuboid;
+    // Positions
+    vertexBuffer->AddVertexAttribute(
+        { 0, 3, GL_FLOAT, GL_FALSE, size6floats, 0 });
+    // Color
+    vertexBuffer->AddVertexAttribute(
+        { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats });
+    vertexBuffer->StaticAllocate(cuboid->mesh->GetIndexData());
+    vertexBuffer->StaticAllocate(cuboid->mesh->GetVertexData());
+
+    m_renderer->AddVertexBuffer("cuboidbuffer", vertexBuffer);
 }
 
 void OpenGLGraphicsEnvironment::LoadShaders()

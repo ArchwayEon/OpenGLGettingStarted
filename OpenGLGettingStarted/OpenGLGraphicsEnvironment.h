@@ -27,11 +27,12 @@ public:
 	void Initialize();
 	void Run();
 
-private:
+protected:
 	void LoadObjects();
 	void LoadShaders();
 	void CreateBasicShader();
 	void CreateBasic3DShader();
+	
 	static void GLAPIENTRY
 		MessageCallback(GLenum source,
 			GLenum type,
