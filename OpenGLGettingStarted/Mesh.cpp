@@ -39,6 +39,13 @@ void Mesh::AddIndexData(int count, ...)
 	va_end(args);
 }
 
+void Mesh::AddTriangle(Position pos1, Position pos2, Position pos3, RGB color)
+{
+	AddVertex(pos1, color);
+	AddVertex(pos2, color);
+	AddVertex(pos3, color);
+}
+
 void Mesh::AddTriangleIndices(unsigned short int idx1, unsigned short int idx2, unsigned short int idx3)
 {
 	m_indexData.push_back(idx1);

@@ -22,6 +22,7 @@ public:
 	void AddVertexData(int count, ...);
 	void AddVertex(Position pos, RGB color);
 	void AddIndexData(int count, ...);
+	void AddTriangle(Position pos1, Position pos2, Position pos3, RGB color);
 	void AddTriangleIndices(unsigned short int idx1, unsigned short int idx2, unsigned short int idx3);
 	const std::vector<float>& GetVertexData() const { return m_vertexData; }
 	const std::vector<unsigned short int>& GetIndexData() const { return m_indexData; }

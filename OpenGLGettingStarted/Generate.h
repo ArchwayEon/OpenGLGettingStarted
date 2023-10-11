@@ -6,5 +6,6 @@ class Generate
 {
 public:
 	static std::shared_ptr<GraphicsObject> FlatSurface(float width, float depth, RGB color);
+	static std::shared_ptr<GraphicsObject> Cuboid(float width, float height, float depth, RGB color);
 };
 
