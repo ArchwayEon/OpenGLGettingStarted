@@ -6,6 +6,7 @@
 #include "Shader.h"
 #include "Scene.h"
 #include "Camera.h"
+#include "Renderer.h"
 
 class OpenGLGraphicsEnvironment
 {
@@ -17,6 +18,7 @@ protected:
 	std::unique_ptr<Scene> m_currentScene;
 	std::map<std::string, std::shared_ptr<GraphicsObject>> m_allObjects;
 	std::shared_ptr<Camera> m_camera;
+	std::unique_ptr<Renderer> m_renderer;
 
 public:
 	OpenGLGraphicsEnvironment(Logger& logger);

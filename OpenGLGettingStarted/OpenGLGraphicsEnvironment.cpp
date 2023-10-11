@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 #include "OpenGLGraphicsEnvironment.h"
 #include "GraphicsObject.h"
-#include "VertexArray.h"
 #include "Generate.h"
 #include <iostream>
 
@@ -52,7 +51,9 @@ void OpenGLGraphicsEnvironment::Initialize()
     glDepthFunc(GL_LEQUAL);
     glDepthRange(0.0f, 1.0f);
 
-    m_camera = make_shared<Camera>();
+    m_renderer = std::make_unique<Renderer>();
+    m_camera = std::make_shared<Camera>();
+    m_renderer->SetCamera(m_camera);
 
     LoadShaders();
     LoadObjects();
@@ -72,53 +73,68 @@ void OpenGLGraphicsEnvironment::Run()
         m_camera->SetupProjectionAndView(m_window->GetAspectRatio());
 
         m_window->Clear();
-        m_currentScene->Render();
+        m_renderer->Render();
         m_window->NextFrame();
     }
 }
 
 void OpenGLGraphicsEnvironment::LoadObjects()
 {
-    m_currentScene = std::make_unique<Scene>();
-    m_currentScene->camera = m_camera;
+    //m_currentScene = std::make_unique<Scene>();
+    //m_currentScene->camera = m_camera;
 
-    m_allObjects["triangle"] = std::make_shared<GraphicsObject>();
-    m_allObjects["triangle"]->vertexArray = std::make_shared<VertexArray>();
-    
+    //m_allObjects["triangle"] = std::make_shared<GraphicsObject>();
+    //m_allObjects["triangle"]->vertexArray = std::make_shared<VertexArray>();
+    //
 
-    std::unique_ptr<Mesh> triangleMesh = std::make_unique<Mesh>();
-    triangleMesh->AddVertexData(3, 0.0f, 0.5f, 0.0f);
-    triangleMesh->AddVertexData(3, 1.0f, 0.0f, 0.0f);
-    triangleMesh->AddVertexData(3, -0.5f, -0.5f, 0.0f);
-    triangleMesh->AddVertexData(3, 0.0f, 0.0f, 1.0f);
-    triangleMesh->AddVertexData(3, 0.5f, -0.5f, 0.0f);
-    triangleMesh->AddVertexData(3, 0.0f, 1.0f, 0.0f);
-    triangleMesh->SetNumberOfVertices(3);
-    triangleMesh->vertexBuffer = std::make_unique<VertexBuffer>();
-    triangleMesh->vertexBuffer->vertexArray = m_allObjects["triangle"]->vertexArray;
-    unsigned int size6floats = sizeof(float) * 6;
-    unsigned long long size3floats = sizeof(float) * 3;
-    // Positions
-    triangleMesh->vertexBuffer->AddVertexAttribute(
-        { 0, 3, GL_FLOAT, GL_FALSE, size6floats, 0 });
-    // Color
-    triangleMesh->vertexBuffer->AddVertexAttribute(
-        { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats });
+    //std::unique_ptr<Mesh> triangleMesh = std::make_unique<Mesh>();
+    //triangleMesh->AddVertexData(3, 0.0f, 0.5f, 0.0f);
+    //triangleMesh->AddVertexData(3, 1.0f, 0.0f, 0.0f);
+    //triangleMesh->AddVertexData(3, -0.5f, -0.5f, 0.0f);
+    //triangleMesh->AddVertexData(3, 0.0f, 0.0f, 1.0f);
+    //triangleMesh->AddVertexData(3, 0.5f, -0.5f, 0.0f);
+    //triangleMesh->AddVertexData(3, 0.0f, 1.0f, 0.0f);
+    //triangleMesh->SetNumberOfVertices(3);
+    //triangleMesh->vertexBuffer = std::make_unique<VertexBuffer>();
+    //triangleMesh->vertexBuffer->vertexArray = m_allObjects["triangle"]->vertexArray;
+    //unsigned int size6floats = sizeof(float) * 6;
+    //unsigned long long size3floats = sizeof(float) * 3;
+    //// Positions
+    //triangleMesh->vertexBuffer->AddVertexAttribute(
+    //    { 0, 3, GL_FLOAT, GL_FALSE, size6floats, 0 });
+    //// Color
+    //triangleMesh->vertexBuffer->AddVertexAttribute(
+    //    { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats });
 
-    triangleMesh->AddTriangleIndices(0, 1, 2);
-    triangleMesh->indexBuffer = std::make_unique<IndexBuffer>();
+    //triangleMesh->AddTriangleIndices(0, 1, 2);
+    //triangleMesh->indexBuffer = std::make_unique<IndexBuffer>();
 
-    m_allObjects["triangle"]->SetMesh(std::move(triangleMesh));
-    m_allObjects["triangle"]->AllocateStaticBuffers();
-    m_allObjects["triangle"]->shader = m_shaders["basic3d"];
+    //m_allObjects["triangle"]->SetMesh(std::move(triangleMesh));
+    //m_allObjects["triangle"]->AllocateStaticBuffers();
+    //m_allObjects["triangle"]->shader = m_shaders["basic3d"];
     //m_currentScene->AddObject("triangle", m_allObjects["triangle"]);
 
 
-    m_allObjects["flatsurface"] = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f });
-    m_allObjects["flatsurface"]->shader = m_shaders["basic3d"];
-    m_allObjects["flatsurface"]->AllocateStaticBuffers();
-    m_currentScene->AddObject("flatsurface", m_allObjects["flatsurface"]);
+    m_renderer->SetShader(m_shaders["basic3d"]);
 
+    auto flatSurface = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f });
+    m_allObjects["flatsurface"] = flatSurface;
+    auto vertexBuffer = std::make_shared<VertexBuffer>();
+    vertexBuffer->GenerateIndexedBuffer();
+    vertexBuffer->attachedObject = flatSurface;
+
+    unsigned int size6floats = sizeof(float) * 6;
+    unsigned long long size3floats = sizeof(float) * 3;
+    // Positions
+    vertexBuffer->AddVertexAttribute(
+        { 0, 3, GL_FLOAT, GL_FALSE, size6floats, 0 });
+    // Color
+    vertexBuffer->AddVertexAttribute(
+        { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats });
+    vertexBuffer->StaticAllocate(flatSurface->mesh->GetIndexData());
+    vertexBuffer->StaticAllocate(flatSurface->mesh->GetVertexData());
+
+    m_renderer->AddVertexBuffer("flatsurfacebuffer", vertexBuffer);
 }
 
 void OpenGLGraphicsEnvironment::LoadShaders()
@@ -131,7 +147,7 @@ void OpenGLGraphicsEnvironment::CreateBasicShader()
 {
     auto shader = make_shared<Shader>(m_logger);
     std::string vertexSourceCode =
-        "#version 460\n"\
+        "#version 400\n"\
         "layout(location = 0) in vec3 position;\n"\
         "layout(location = 1) in vec3 vertexColor;\n"\
         "out vec4 fragColor;\n"\
@@ -141,7 +157,7 @@ void OpenGLGraphicsEnvironment::CreateBasicShader()
         "   fragColor = vec4(vertexColor, 1.0);\n" \
         "}\n";
     std::string fragmentSourceCode =
-        "#version 460\n"\
+        "#version 400\n"\
         "in vec4 fragColor;\n"\
         "out vec4 color;\n"\
         "void main()\n"\
@@ -157,7 +173,7 @@ void OpenGLGraphicsEnvironment::CreateBasic3DShader()
 {
     auto shader = make_shared<Shader>(m_logger);
     std::string vertexSourceCode =
-        "#version 460\n"\
+        "#version 400\n"\
         "layout(location = 0) in vec3 position;\n"\
         "layout(location = 1) in vec3 vertexColor;\n"\
         "out vec4 fragColor;\n"\
@@ -170,7 +186,7 @@ void OpenGLGraphicsEnvironment::CreateBasic3DShader()
         "   fragColor = vec4(vertexColor, 1.0);\n" \
         "}\n";
     std::string fragmentSourceCode =
-        "#version 460\n"\
+        "#version 400\n"\
         "in vec4 fragColor;\n"\
         "out vec4 color;\n"\
         "void main()\n"\

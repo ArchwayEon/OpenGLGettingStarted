@@ -27,11 +27,6 @@ void Mesh::AddVertex(Position pos, RGB color)
 	m_numberOfVertices++;
 }
 
-void Mesh::AddVertexAttribute(const VertexAttribute& attr)
-{
-	vertexBuffer->AddVertexAttribute(attr);
-}
-
 void Mesh::AddIndexData(int count, ...)
 {
 	va_list args;
@@ -52,16 +47,3 @@ void Mesh::AddTriangleIndices(unsigned short int idx1, unsigned short int idx2, 
 	m_numberOfIndices += 3;
 }
 
-void Mesh::Render() const
-{
-	vertexBuffer->EnableAttributes();
-	indexBuffer->Select();
-	glDrawElements(GL_TRIANGLES, m_numberOfIndices, GL_UNSIGNED_SHORT, 0);
-	vertexBuffer->DisableAttributes();
-}
-
-void Mesh::AllocateStaticBuffers()
-{
-	vertexBuffer->StaticAllocate(m_vertexData);
-	indexBuffer->StaticAllocate(m_indexData);
-}

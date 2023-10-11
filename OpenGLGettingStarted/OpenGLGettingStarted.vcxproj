@@ -140,11 +140,10 @@
     <ClCompile Include="AbstractGraphicsWindow.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Generate.cpp" />
-    <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlfwGraphicsWindow.cpp" />
@@ -158,11 +157,10 @@
     <ClInclude Include="AbstractGraphicsWindow.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Generate.h" />
-    <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ReferenceFrame.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="GlfwGraphicsWindow.h" />
     <ClInclude Include="GraphicsStructures.h" />
