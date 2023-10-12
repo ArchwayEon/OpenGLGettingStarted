@@ -2,6 +2,8 @@
 #ifndef GRAPHICS_STRUCTURES
 #define GRAPHICS_STRUCTURES
 
+#include <glm/glm.hpp>
+
 struct RGB {
 	float red, green, blue;
 };
@@ -14,9 +16,19 @@ struct Position {
 	float x, y, z;
 };
 
-struct Vertex {
+struct Direction {
 	float x, y, z;
-	float red, green, blue;
 };
+
+struct Material {
+	float ambientIntensity;
+};
+
+struct Light {
+	glm::vec3 position;
+	glm::vec3 color;
+	float intensity;
+};
+
 
 #endif

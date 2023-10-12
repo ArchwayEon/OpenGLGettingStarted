@@ -1,6 +1,11 @@
 #include <cstdarg>
 #include "Mesh.h"
 
+Mesh::Mesh() : m_numberOfVertices(0), m_numberOfIndices(0)
+{
+	material.ambientIntensity = 0.1f;
+}
+
 void Mesh::AddVertexData(int count, ...)
 {
 	va_list args;
@@ -24,6 +29,20 @@ void Mesh::AddVertex(Position pos, RGB color)
 	m_vertexData.push_back(color.red);
 	m_vertexData.push_back(color.green);
 	m_vertexData.push_back(color.blue);
+	m_numberOfVertices++;
+}
+
+void Mesh::AddVertex(Position pos, RGB color, Direction normal)
+{
+	m_vertexData.push_back(pos.x);
+	m_vertexData.push_back(pos.y);
+	m_vertexData.push_back(pos.z);
+	m_vertexData.push_back(color.red);
+	m_vertexData.push_back(color.green);
+	m_vertexData.push_back(color.blue);
+	m_vertexData.push_back(normal.x);
+	m_vertexData.push_back(normal.y);
+	m_vertexData.push_back(normal.z);
 	m_numberOfVertices++;
 }
 

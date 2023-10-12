@@ -15,7 +15,7 @@ protected:
 	int m_majorVersion, m_minorVersion;
 	std::shared_ptr<GlfwGraphicsWindow> m_window;
 	std::map<std::string,std::shared_ptr<Shader>> m_shaders;
-	std::unique_ptr<Scene> m_currentScene;
+	std::shared_ptr<Scene> m_currentScene;
 	std::map<std::string, std::shared_ptr<GraphicsObject>> m_allObjects;
 	std::shared_ptr<Camera> m_camera;
 	std::unique_ptr<Renderer> m_renderer;
@@ -32,6 +32,7 @@ protected:
 	void LoadShaders();
 	void CreateBasicShader();
 	void CreateBasic3DShader();
+	void CreateBasic3DLightingShader();
 	
 	static void GLAPIENTRY
 		MessageCallback(GLenum source,

@@ -23,11 +23,17 @@ void Renderer::Render() const
 	// Global uniforms
 	m_shader->SendUniform("uProjection", m_camera->GetProjection());
 	m_shader->SendUniform("uView", m_camera->GetView());
+	m_shader->SendUniform("uGlobalLightPosition", m_scene->globalLight.position);
+	m_shader->SendUniform("uGlobalLightColor", m_scene->globalLight.color);
+	m_shader->SendUniform("uGlobalLightIntensity", m_scene->globalLight.intensity);
+
 	for (const auto& element : m_bufferMap) {
 		const auto& buffer = element.second;
 		glBindBuffer(GL_ARRAY_BUFFER, buffer->GetVBOId());
 		// Per object uniforms
-		m_shader->SendUniform("uWorld", buffer->attachedObject->frame.orientation);
+		const auto& obj = buffer->attachedObject;
+		m_shader->SendUniform("uWorld", obj->frame.orientation);
+		m_shader->SendUniform("uMaterialAmbientIntensity", obj->mesh->material.ambientIntensity);
 		SetAttributeInterpretation(buffer->GetAttributes());
 		if (buffer->IsIndexed()) {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->GetIBOId());

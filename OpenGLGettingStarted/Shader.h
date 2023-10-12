@@ -16,6 +16,8 @@ public:
 	inline unsigned int GetProgramId() const { return m_programId; }
 	void Select() const;
 	void SendUniform(const std::string& uniformName, const glm::mat4& mat4) const;
+	void SendUniform(const std::string& uniformName, float data) const;
+	void SendUniform(const std::string& uniformName, const glm::vec3& vector) const;
 
 protected:
 	int Compile(unsigned int type, const std::string& sourceCode);

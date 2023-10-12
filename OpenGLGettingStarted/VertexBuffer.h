@@ -47,7 +47,7 @@ public:
 	void Unselect() const;
 	void AddVertexAttribute(const VertexAttribute& attr);
 	void EnableAttributes() const;
-	void StaticAllocate(std::vector<float> vertexData);
+	void StaticAllocate(std::vector<float> vertexData, int numberOfElementsInAVertex);
 	void StaticAllocate(const std::vector<unsigned short int>& indexData);
 	void DisableAttributes() const;
 };

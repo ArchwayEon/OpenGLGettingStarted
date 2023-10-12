@@ -30,6 +30,18 @@ void Shader::SendUniform(const std::string& uniformName, const glm::mat4& mat4) 
     glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat4));
 }
 
+void Shader::SendUniform(const std::string& uniformName, float data) const
+{
+    unsigned int location = glGetUniformLocation(m_programId, uniformName.c_str());
+    glUniform1f(location, data);
+}
+
+void Shader::SendUniform(const std::string& uniformName, const glm::vec3& vector) const
+{
+    unsigned int location = glGetUniformLocation(m_programId, uniformName.c_str());
+    glUniform3fv(location, 1, glm::value_ptr(vector));
+}
+
 int Shader::Compile(unsigned int type, const std::string& sourceCode)
 {
     const char* source = sourceCode.c_str();

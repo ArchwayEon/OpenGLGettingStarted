@@ -80,7 +80,7 @@ void OpenGLGraphicsEnvironment::Run()
 
 void OpenGLGraphicsEnvironment::LoadObjects()
 {
-    //m_currentScene = std::make_unique<Scene>();
+    
     //m_currentScene->camera = m_camera;
 
     //m_allObjects["triangle"] = std::make_shared<GraphicsObject>();
@@ -114,8 +114,9 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     //m_allObjects["triangle"]->shader = m_shaders["basic3d"];
     //m_currentScene->AddObject("triangle", m_allObjects["triangle"]);
 
-
-    m_renderer->SetShader(m_shaders["basic3d"]);
+    m_currentScene = std::make_shared<Scene>();
+    m_renderer->SetScene(m_currentScene);
+    m_renderer->SetShader(m_shaders["basic3dlighting"]);
 
     auto flatSurface = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f });
     m_allObjects["flatsurface"] = flatSurface;
@@ -123,16 +124,20 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->GenerateIndexedBuffer();
     vertexBuffer->attachedObject = flatSurface;
 
-    unsigned int size6floats = sizeof(float) * 6;
-    unsigned long long size3floats = sizeof(float) * 3;
+    unsigned int size9floats = sizeof(float) * 9;
+    unsigned long long offset3floats = sizeof(float) * 3;
+    unsigned long long offset6floats = sizeof(float) * 6;
     // Positions
     vertexBuffer->AddVertexAttribute(
-        { 0, 3, GL_FLOAT, GL_FALSE, size6floats, 0 });
+        { 0, 3, GL_FLOAT, GL_FALSE, size9floats, 0 });
     // Color
     vertexBuffer->AddVertexAttribute(
-        { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats });
+        { 1, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset3floats });
+    // Normal
+    vertexBuffer->AddVertexAttribute(
+        { 2, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset6floats });
     vertexBuffer->StaticAllocate(flatSurface->mesh->GetIndexData());
-    vertexBuffer->StaticAllocate(flatSurface->mesh->GetVertexData());
+    vertexBuffer->StaticAllocate(flatSurface->mesh->GetVertexData(), 9);
 
     m_renderer->AddVertexBuffer("flatsurfacebuffer", vertexBuffer);
 
@@ -141,14 +146,15 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateIndexedBuffer();
     vertexBuffer->attachedObject = cuboid;
+    unsigned int size6floats = sizeof(float) * 6;
     // Positions
     vertexBuffer->AddVertexAttribute(
         { 0, 3, GL_FLOAT, GL_FALSE, size6floats, 0 });
     // Color
     vertexBuffer->AddVertexAttribute(
-        { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats });
+        { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)offset3floats });
     vertexBuffer->StaticAllocate(cuboid->mesh->GetIndexData());
-    vertexBuffer->StaticAllocate(cuboid->mesh->GetVertexData());
+    vertexBuffer->StaticAllocate(cuboid->mesh->GetVertexData(), 6);
 
     m_renderer->AddVertexBuffer("cuboidbuffer", vertexBuffer);
 }
@@ -157,13 +163,14 @@ void OpenGLGraphicsEnvironment::LoadShaders()
 {
     CreateBasicShader();
     CreateBasic3DShader();
+    CreateBasic3DLightingShader();
 }
 
 void OpenGLGraphicsEnvironment::CreateBasicShader()
 {
     auto shader = make_shared<Shader>(m_logger);
     std::string vertexSourceCode =
-        "#version 400\n"\
+        "#version 460\n"\
         "layout(location = 0) in vec3 position;\n"\
         "layout(location = 1) in vec3 vertexColor;\n"\
         "out vec4 fragColor;\n"\
@@ -189,7 +196,7 @@ void OpenGLGraphicsEnvironment::CreateBasic3DShader()
 {
     auto shader = make_shared<Shader>(m_logger);
     std::string vertexSourceCode =
-        "#version 400\n"\
+        "#version 460\n"\
         "layout(location = 0) in vec3 position;\n"\
         "layout(location = 1) in vec3 vertexColor;\n"\
         "out vec4 fragColor;\n"\
@@ -212,5 +219,52 @@ void OpenGLGraphicsEnvironment::CreateBasic3DShader()
 
     shader->Create(vertexSourceCode, fragmentSourceCode);
     m_shaders["basic3d"] = shader;
+}
+
+void OpenGLGraphicsEnvironment::CreateBasic3DLightingShader()
+{
+    auto shader = make_shared<Shader>(m_logger);
+    std::string vertexSourceCode =
+        "#version 460\n"\
+        "layout(location = 0) in vec3 position;\n"\
+        "layout(location = 1) in vec3 vertexColor;\n"\
+        "layout(location = 2) in vec3 vertexNormal;\n"\
+        "out vec4 fragColor;\n"\
+        "out vec3 fragNormal;\n"\
+        "out vec3 fragPosition;\n"\
+        "uniform mat4 uWorld;\n"\
+        "uniform mat4 uView;\n"\
+        "uniform mat4 uProjection;\n"\
+        "void main()\n"\
+        "{\n"\
+        "   vec4 worldPosition = uWorld * vec4(position, 1.0);\n" \
+        "   gl_Position = uProjection * uView * worldPosition;\n" \
+        "   vec3 worldNormal = mat3(uWorld) * vertexNormal;\n" \
+        "   fragPosition = vec3(worldPosition);\n" \
+        "   fragNormal = normalize(worldNormal);\n" \
+        "   fragColor = vec4(vertexColor, 1.0);\n" \
+        "}\n";
+    std::string fragmentSourceCode =
+        "#version 460\n"\
+        "in vec4 fragColor;\n"\
+        "in vec3 fragNormal;\n"\
+        "in vec3 fragPosition;\n"\
+        "out vec4 color;\n"\
+        "uniform float uMaterialAmbientIntensity;\n"\
+        "uniform vec3 uGlobalLightPosition;\n"\
+        "uniform vec3 uGlobalLightColor;\n"\
+        "uniform float uGlobalLightIntensity;\n"\
+        "void main()\n"\
+        "{\n"\
+        "   vec3 toGlobalLightDir = normalize(uGlobalLightPosition - fragPosition);\n"\
+        "   float cosAngIncidence = dot(fragNormal, toGlobalLightDir);\n"\
+        "   cosAngIncidence = clamp(cosAngIncidence, 0.0f, 1.0f);\n"\
+        "   vec4 globalDiffuse = cosAngIncidence * uGlobalLightIntensity * vec4(uGlobalLightColor, 1.0f);\n"\
+        "   vec4 ambientColor = uMaterialAmbientIntensity * vec4(1.0f, 1.0f, 1.0f, 1.0f);\n"\
+        "   color = (ambientColor + globalDiffuse)  * fragColor;\n"\
+        "}\n";
+
+    shader->Create(vertexSourceCode, fragmentSourceCode);
+    m_shaders["basic3dlighting"] = shader;
 }
 

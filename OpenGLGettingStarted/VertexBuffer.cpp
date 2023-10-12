@@ -47,9 +47,9 @@ void VertexBuffer::EnableAttributes() const
 	//}
 }
 
-void VertexBuffer::StaticAllocate(std::vector<float> vertexData)
+void VertexBuffer::StaticAllocate(std::vector<float> vertexData, int numberOfElementsInAVertex)
 {
-	m_vertexCount = vertexData.size();
+	m_vertexCount = vertexData.size() / numberOfElementsInAVertex;
 	unsigned long long bytesToAllocate = vertexData.size() * sizeof(float);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vboId);
 	glBufferData(GL_ARRAY_BUFFER, bytesToAllocate, vertexData.data(), GL_STATIC_DRAW);
