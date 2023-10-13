@@ -179,8 +179,8 @@ void OpenGLGraphicsEnvironment::LoadObjects()
 
     m_renderer->AddVertexBuffer("flatsurfacebuffer", vertexBuffer);
 
-    auto cuboid = Generate::Cuboid(2, 2, 2, { 0.5f, 0.0f, 0.0f });
-    m_allObjects["cuboid"] = cuboid;
+    auto cuboid = Generate::Cuboid(1, 1, 1, { 1.0f, 0.0f, 0.0f });
+    m_allObjects["red cube"] = cuboid;
     vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
     vertexBuffer->attachedObject = cuboid;
@@ -195,7 +195,29 @@ void OpenGLGraphicsEnvironment::LoadObjects()
         { 2, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset6floats });
     vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 6);
 
+    m_allObjects["red cube"]->frame.SetPosition(0, 0.5f, 0);
+
     m_renderer->AddVertexBuffer("cuboidbuffer", vertexBuffer);
+
+    cuboid = Generate::Cuboid(0.5f, 0.5f, 0.5f, { 1, 1, 1 });
+    m_allObjects["white cube"] = cuboid;
+    vertexBuffer = std::make_shared<VertexBuffer>();
+    vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
+    vertexBuffer->attachedObject = cuboid;
+    // Positions
+    vertexBuffer->AddVertexAttribute(
+        { 0, 3, GL_FLOAT, GL_FALSE, size9floats, 0 });
+    // Color
+    vertexBuffer->AddVertexAttribute(
+        { 1, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset3floats });
+    // Normal
+    vertexBuffer->AddVertexAttribute(
+        { 2, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset6floats });
+    vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 6);
+
+    m_allObjects["white cube"]->frame.SetPosition(0, 0.5f, 2.5f);
+
+    m_renderer->AddVertexBuffer("whitecuboidbuffer", vertexBuffer);
 }
 
 void OpenGLGraphicsEnvironment::LoadShaders()
