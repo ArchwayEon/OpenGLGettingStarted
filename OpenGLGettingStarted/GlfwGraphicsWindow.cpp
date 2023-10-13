@@ -57,9 +57,6 @@ void GlfwGraphicsWindow::CheckInputs()
 	if (glfwGetKey(m_window, GLFW_KEY_F2) == GLFW_PRESS) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-
-
-	
 }
 
 unsigned int GlfwGraphicsWindow::GetKeyState(unsigned int whichKey)

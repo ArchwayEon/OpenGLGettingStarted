@@ -3,7 +3,7 @@
 
 Mesh::Mesh() : m_numberOfVertices(0), m_numberOfIndices(0)
 {
-	material.ambientIntensity = 0.1f;
+	material.ambientIntensity = 0.3f;
 }
 
 void Mesh::AddVertexData(int count, ...)

@@ -16,10 +16,11 @@ void Scene::AddObject(const std::string& name, std::shared_ptr<GraphicsObject> o
 	m_objectMap[name] = object;
 }
 
-//void Scene::Render()
-//{
-//	for (const auto& element : m_objectMap) {
-//		const auto& object = element.second;
-//		object->Render(camera);
-//	}
-//}
+void Scene::Update(double elapsedSeconds)
+{
+	for (const auto& element : m_objectMap) {
+		const auto& object = element.second;
+		object->Update(elapsedSeconds);
+	}
+}
+

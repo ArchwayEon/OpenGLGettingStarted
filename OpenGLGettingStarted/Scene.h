@@ -18,6 +18,6 @@ public:
 	Scene();
 	~Scene();
 	void AddObject(const std::string& name, std::shared_ptr<GraphicsObject> object);
-	//void Render();
+	void Update(double elapsedSeconds);
 };
 

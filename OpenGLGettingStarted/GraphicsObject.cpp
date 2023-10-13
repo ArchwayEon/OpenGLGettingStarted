@@ -9,20 +9,10 @@ GraphicsObject::~GraphicsObject()
 {
 }
 
-
-void GraphicsObject::AllocateStaticBuffers()
+void GraphicsObject::Update(double elapsedSeconds)
 {
-	//vertexArray->Select();
-	//mesh->AllocateStaticBuffers();
+	double deltaDegrees = 90 * elapsedSeconds;
+	frame.Rotate((float)deltaDegrees, { 0, 1, 0 });
 }
 
-//void GraphicsObject::Render(std::shared_ptr<Camera> camera) const
-//{
-//	//vertexArray->Select();
-//	//shader->Select();
-//	//shader->SendUniform("uProjection", camera->GetProjection());
-//	//shader->SendUniform("uView", camera->GetView());
-//	//shader->SendUniform("uWorld", mesh->frame.orientation);
-//	//mesh->Render();
-//}
 

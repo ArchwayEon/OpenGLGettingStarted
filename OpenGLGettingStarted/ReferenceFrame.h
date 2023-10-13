@@ -29,6 +29,5 @@ public:
     void Move(const glm::vec3& vector);
     void PointAt(float x, float y, float z);
     void PointAt(const glm::vec3& point);
-    //void SetFromSphericalCoordinates(SphericalCoordinate euler);
 };
 

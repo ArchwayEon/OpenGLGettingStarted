@@ -19,5 +19,5 @@ public:
 public:
     GraphicsObject();
     ~GraphicsObject();
-    void AllocateStaticBuffers();
+    void Update(double elapsedSeconds);
 };

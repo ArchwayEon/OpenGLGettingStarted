@@ -26,11 +26,9 @@ void Renderer::Render() const
 	m_shader->SendUniform("uGlobalLightPosition", m_scene->globalLight.position);
 	m_shader->SendUniform("uGlobalLightColor", m_scene->globalLight.color);
 	m_shader->SendUniform("uGlobalLightIntensity", m_scene->globalLight.intensity);
-
 	for (const auto& element : m_bufferMap) {
 		const auto& buffer = element.second;
 		buffer->Select("VBO");
-		//glBindBuffer(GL_ARRAY_BUFFER, buffer->GetVBOId());
 		// Per object uniforms
 		const auto& obj = buffer->attachedObject;
 		m_shader->SendUniform("uWorld", obj->frame.orientation);
@@ -38,7 +36,6 @@ void Renderer::Render() const
 		SetAttributeInterpretation(buffer->GetAttributes());
 		if (buffer->IsIndexed()) {
 			buffer->Select("IBO");
-			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->GetIBOId());
 			glDrawElements(
 				buffer->GetPrimitiveType(), 
 				(GLsizei)buffer->GetIndexCount(), 

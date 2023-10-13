@@ -55,6 +55,7 @@ void OpenGLGraphicsEnvironment::Initialize()
     m_renderer = std::make_unique<Renderer>();
     m_camera = std::make_shared<Camera>();
     m_renderer->SetCamera(m_camera);
+    m_timer = std::make_unique<HighResolutionTimer>();
 
     LoadShaders();
     LoadObjects();
@@ -64,16 +65,17 @@ void OpenGLGraphicsEnvironment::Initialize()
 
 void OpenGLGraphicsEnvironment::Run()
 {
+    m_timer->StartTiming();
     m_window->SetupFramebufferSizeCallback();
-
+    m_timer->StartTiming();
     while (m_window->IsTimeToClose() == false) {
         m_window->GetWindowSize();
         m_window->CheckInputs();
         CheckKeyState();
         //m_camera->SetupLookingForward();
         m_camera->SetupProjectionAndView(m_window->GetAspectRatio());
-
         m_window->Clear();
+        m_currentScene->Update(m_timer->GetElapsedTimeInSeconds());
         m_renderer->Render();
         m_window->NextFrame();
     }
@@ -196,6 +198,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 6);
 
     m_allObjects["red cube"]->frame.SetPosition(0, 0.5f, 0);
+    m_currentScene->AddObject("red cube", m_allObjects["red cube"]);
 
     m_renderer->AddVertexBuffer("cuboidbuffer", vertexBuffer);
 

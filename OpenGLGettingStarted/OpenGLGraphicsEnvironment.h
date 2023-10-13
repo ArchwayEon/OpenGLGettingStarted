@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "Camera.h"
 #include "Renderer.h"
+#include "HighResolutionTimer.h"
 class GlfwGraphicsWindow;
 class AbstractGraphicsWindow;
 
@@ -20,6 +21,7 @@ protected:
 	std::map<std::string, std::shared_ptr<GraphicsObject>> m_allObjects;
 	std::shared_ptr<Camera> m_camera;
 	std::unique_ptr<Renderer> m_renderer;
+	std::unique_ptr<HighResolutionTimer> m_timer;
 
 public:
 	OpenGLGraphicsEnvironment(Logger& logger);
