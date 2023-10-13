@@ -202,7 +202,8 @@ void OpenGLGraphicsEnvironment::LoadShaders()
 {
     CreateBasicShader();
     CreateBasic3DShader();
-    CreateBasic3DLightingShader();
+    //CreateBasic3DLightingShader();
+    ReadShadersFromFiles("basic3dlighting.vert.glsl", "basic3dlighting.frag.glsl");
 }
 
 void OpenGLGraphicsEnvironment::CreateBasicShader()
@@ -304,6 +305,13 @@ void OpenGLGraphicsEnvironment::CreateBasic3DLightingShader()
         "}\n";
 
     shader->Create(vertexSourceCode, fragmentSourceCode);
+    m_shaders["basic3dlighting"] = shader;
+}
+
+void OpenGLGraphicsEnvironment::ReadShadersFromFiles(const std::string& vertexFilePath, const std::string& fragmentFilePath)
+{
+    auto shader = make_shared<Shader>(m_logger);
+    shader->ReadFromFile(vertexFilePath, fragmentFilePath);
     m_shaders["basic3dlighting"] = shader;
 }
 

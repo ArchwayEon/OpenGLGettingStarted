@@ -12,6 +12,7 @@ protected:
 public:
 	Shader(Logger& logger);
 	virtual ~Shader() = default;
+	bool ReadFromFile(const std::string& vertexSourceFilePath, const std::string& fragmentSourceFilePath);
 	int Create(const std::string& vertexSourceCode, const std::string& fragmentSourceCode);
 	inline unsigned int GetProgramId() const { return m_programId; }
 	void Select() const;

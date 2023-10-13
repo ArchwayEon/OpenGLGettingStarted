@@ -144,6 +144,7 @@
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="TextFileReader.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlfwGraphicsWindow.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="TextFileReader.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="GlfwGraphicsWindow.h" />
     <ClInclude Include="GraphicsStructures.h" />
@@ -168,6 +170,10 @@
     <ClInclude Include="OpenGLGraphicsEnvironment.h" />
     <ClInclude Include="GraphicsObject.h" />
     <ClInclude Include="Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="basic3dlighting.frag.glsl" />
+    <None Include="basic3dlighting.vert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

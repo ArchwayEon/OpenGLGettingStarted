@@ -35,6 +35,7 @@ protected:
 	void CreateBasicShader();
 	void CreateBasic3DShader();
 	void CreateBasic3DLightingShader();
+	void ReadShadersFromFiles(const std::string& vertexFilePath, const std::string& fragmentFilePath);
 	
 	static void GLAPIENTRY
 		MessageCallback(GLenum source,

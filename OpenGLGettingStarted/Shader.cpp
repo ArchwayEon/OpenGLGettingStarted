@@ -1,10 +1,26 @@
 #include "Shader.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <memory>
+#include "TextFileReader.h"
 
 Shader::Shader(Logger& logger) : 
     m_logger(logger), m_programId(0)
 {
+}
+
+bool Shader::ReadFromFile(const std::string& vertexSourceFilePath, const std::string& fragmentSourceFilePath)
+{
+    auto reader = std::make_unique<TextFileReader>();
+    reader->SetFilePath(vertexSourceFilePath);
+    if (reader->Read() == false) return false;
+    std::string vertexSource = reader->GetData();
+    
+    reader->SetFilePath(fragmentSourceFilePath);
+    if (reader->Read() == false) return false;
+    std::string fragmentSource = reader->GetData();
+    Create(vertexSource, fragmentSource);
+    return true;
 }
 
 int Shader::Create(const std::string& vertexSourceCode, const std::string& fragmentSourceCode)
