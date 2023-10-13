@@ -140,6 +140,7 @@
     <ClCompile Include="AbstractGraphicsWindow.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Generate.cpp" />
+    <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="AbstractGraphicsWindow.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Generate.h" />
+    <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="Renderer.h" />
