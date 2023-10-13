@@ -29,14 +29,16 @@ void Renderer::Render() const
 
 	for (const auto& element : m_bufferMap) {
 		const auto& buffer = element.second;
-		glBindBuffer(GL_ARRAY_BUFFER, buffer->GetVBOId());
+		buffer->Select("VBO");
+		//glBindBuffer(GL_ARRAY_BUFFER, buffer->GetVBOId());
 		// Per object uniforms
 		const auto& obj = buffer->attachedObject;
 		m_shader->SendUniform("uWorld", obj->frame.orientation);
 		m_shader->SendUniform("uMaterialAmbientIntensity", obj->mesh->material.ambientIntensity);
 		SetAttributeInterpretation(buffer->GetAttributes());
 		if (buffer->IsIndexed()) {
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->GetIBOId());
+			buffer->Select("IBO");
+			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->GetIBOId());
 			glDrawElements(
 				buffer->GetPrimitiveType(), 
 				(GLsizei)buffer->GetIndexCount(), 

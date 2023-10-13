@@ -26,6 +26,7 @@ public:
 	virtual bool Create() = 0;
 	virtual bool IsTimeToClose() = 0;
 	virtual void CheckInputs() = 0;
+	virtual unsigned int GetKeyState(unsigned int whichKey) = 0;
 	virtual void Clear() = 0;
 	virtual void NextFrame() = 0;
 	//virtual void SetOnResize() = 0;

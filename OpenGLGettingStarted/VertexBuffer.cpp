@@ -5,22 +5,33 @@ VertexBuffer::VertexBuffer() :
 	m_vboId(0), m_iboId(0), m_isIndexed(false), m_primitiveType(GL_TRIANGLES), 
 	m_vertexCount(0), m_indexCount(0)
 {
-	glGenBuffers(1, &m_vboId);
+	
 }
 
 VertexBuffer::~VertexBuffer()
 {
 }
 
-void VertexBuffer::GenerateIndexedBuffer()
+void VertexBuffer::GenerateBufferId(const std::string& bufferName, BufferDataType type)
 {
-	glGenBuffers(1, &m_iboId);
-	m_isIndexed = true;
+	unsigned int bufferId;
+	glGenBuffers(1, &bufferId);
+	m_bufferIdMap[bufferName] = bufferId;
+	m_bufferTypeMap[bufferName] = type;
 }
 
-void VertexBuffer::Select() const
+void VertexBuffer::Select(const std::string& bufferName)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, m_vboId);
+	BufferDataType type = m_bufferTypeMap[bufferName];
+	switch (type) {
+	case BufferDataType::VertexData:
+		glBindBuffer(GL_ARRAY_BUFFER, m_bufferIdMap[bufferName]);
+		break;
+	case BufferDataType::IndexData:
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_bufferIdMap[bufferName]);
+		break;
+	}
+	
 }
 
 void VertexBuffer::Unselect() const
@@ -33,25 +44,11 @@ void VertexBuffer::AddVertexAttribute(const VertexAttribute& attr)
 	m_attributes.push_back(attr);
 }
 
-void VertexBuffer::EnableAttributes() const
-{
-	//vertexArray->Select();
-	//Select();
-	//for (unsigned int i = 0; i < m_attributes.size(); i++) {
-	//	const auto& attr = m_attributes[i];
-	//	glEnableVertexAttribArray(attr.index);
-	//	glVertexAttribPointer(
-	//		attr.index, attr.numberOfComponents, attr.type,
-	//		attr.isNormalized, attr.bytesToNext, attr.byteOffset
-	//	);
-	//}
-}
-
-void VertexBuffer::StaticAllocate(std::vector<float> vertexData, int numberOfElementsInAVertex)
+void VertexBuffer::StaticAllocate(const std::string& bufferName, std::vector<float> vertexData, int numberOfElementsInAVertex)
 {
 	m_vertexCount = vertexData.size() / numberOfElementsInAVertex;
 	unsigned long long bytesToAllocate = vertexData.size() * sizeof(float);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vboId);
+	Select(bufferName);
 	glBufferData(GL_ARRAY_BUFFER, bytesToAllocate, vertexData.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -64,11 +61,11 @@ void VertexBuffer::DisableAttributes() const
 	}
 }
 
-void VertexBuffer::StaticAllocate(const std::vector<unsigned short int>& indexData)
+void VertexBuffer::StaticAllocate(const std::string& bufferName, const std::vector<unsigned short int>& indexData)
 {
 	m_indexCount = indexData.size();
 	unsigned long long bytesToAllocate = indexData.size() * sizeof(unsigned short int);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_iboId);
+	Select(bufferName);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, bytesToAllocate, indexData.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

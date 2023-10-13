@@ -16,6 +16,7 @@ public:
 	bool Create();
 	bool IsTimeToClose();
 	void CheckInputs();
+	unsigned int GetKeyState(unsigned int whichKey);
 	void Clear();
 	void NextFrame();
 	void GetWindowSize();

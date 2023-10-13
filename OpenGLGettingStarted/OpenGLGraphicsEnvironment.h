@@ -1,12 +1,13 @@
 #pragma once
 #include <memory>
 #include <map>
-#include "GlfwGraphicsWindow.h"
 #include "GraphicsObject.h"
 #include "Shader.h"
 #include "Scene.h"
 #include "Camera.h"
 #include "Renderer.h"
+class GlfwGraphicsWindow;
+class AbstractGraphicsWindow;
 
 class OpenGLGraphicsEnvironment
 {
@@ -26,6 +27,7 @@ public:
 	void SetGraphicsWindow(std::shared_ptr<AbstractGraphicsWindow> window);
 	void Initialize();
 	void Run();
+	void CheckKeyState();
 
 protected:
 	void LoadObjects();

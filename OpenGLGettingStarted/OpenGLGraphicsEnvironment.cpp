@@ -2,6 +2,7 @@
 #include <glad/glad.h> 
 #include <GLFW/glfw3.h>
 #include "OpenGLGraphicsEnvironment.h"
+#include "GlfwGraphicsWindow.h"
 #include "GraphicsObject.h"
 #include "Generate.h"
 #include <iostream>
@@ -58,7 +59,7 @@ void OpenGLGraphicsEnvironment::Initialize()
     LoadShaders();
     LoadObjects();
 
-    m_camera->frame.SetPosition(0.0f, 5.0f, 10.0f);
+    m_camera->frame.SetPosition(3.0f, 3.0f, 5.0f);
 }
 
 void OpenGLGraphicsEnvironment::Run()
@@ -68,13 +69,49 @@ void OpenGLGraphicsEnvironment::Run()
     while (m_window->IsTimeToClose() == false) {
         m_window->GetWindowSize();
         m_window->CheckInputs();
-        
+        CheckKeyState();
         //m_camera->SetupLookingForward();
         m_camera->SetupProjectionAndView(m_window->GetAspectRatio());
 
         m_window->Clear();
         m_renderer->Render();
         m_window->NextFrame();
+    }
+}
+
+void OpenGLGraphicsEnvironment::CheckKeyState()
+{
+    if (m_window->GetKeyState(GLFW_KEY_1) == GLFW_PRESS) {
+        m_camera->frame.SetPosition(3.0f, 3.0f, 5.0f);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_2) == GLFW_PRESS) {
+        m_camera->frame.SetPosition(3.0f, 3.0f, -5.0f);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_3) == GLFW_PRESS) {
+        m_camera->frame.SetPosition(-3.0f, 3.0f, 5.0f);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_4) == GLFW_PRESS) {
+        m_camera->frame.SetPosition(-3.0f, 3.0f, -5.0f);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_5) == GLFW_PRESS) {
+        m_camera->frame.SetPosition(3.0f, -3.0f, 5.0f);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_6) == GLFW_PRESS) {
+        m_camera->frame.SetPosition(3.0f, -3.0f, -5.0f);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_7) == GLFW_PRESS) {
+        m_camera->frame.SetPosition(-3.0f, -3.0f, 5.0f);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_8) == GLFW_PRESS) {
+        m_camera->frame.SetPosition(-3.0f, -3.0f, -5.0f);
+        return;
     }
 }
 
@@ -121,12 +158,32 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     auto flatSurface = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f });
     m_allObjects["flatsurface"] = flatSurface;
     auto vertexBuffer = std::make_shared<VertexBuffer>();
-    vertexBuffer->GenerateIndexedBuffer();
+    vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
+    vertexBuffer->GenerateBufferId("IBO", BufferDataType::IndexData);
+    vertexBuffer->SetIsIndexed(true);
     vertexBuffer->attachedObject = flatSurface;
 
     unsigned int size9floats = sizeof(float) * 9;
     unsigned long long offset3floats = sizeof(float) * 3;
     unsigned long long offset6floats = sizeof(float) * 6;
+    // Positions
+    vertexBuffer->AddVertexAttribute({ 0, 3, GL_FLOAT, GL_FALSE, size9floats, 0 });
+    // Color
+    vertexBuffer->AddVertexAttribute(
+        { 1, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset3floats });
+    // Normal
+    vertexBuffer->AddVertexAttribute(
+        { 2, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset6floats });
+    vertexBuffer->StaticAllocate("IBO", flatSurface->mesh->GetIndexData());
+    vertexBuffer->StaticAllocate("VBO", flatSurface->mesh->GetVertexData(), 9);
+
+    m_renderer->AddVertexBuffer("flatsurfacebuffer", vertexBuffer);
+
+    auto cuboid = Generate::Cuboid(2, 2, 2, { 0.5f, 0.0f, 0.0f });
+    m_allObjects["cuboid"] = cuboid;
+    vertexBuffer = std::make_shared<VertexBuffer>();
+    vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
+    vertexBuffer->attachedObject = cuboid;
     // Positions
     vertexBuffer->AddVertexAttribute(
         { 0, 3, GL_FLOAT, GL_FALSE, size9floats, 0 });
@@ -136,25 +193,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     // Normal
     vertexBuffer->AddVertexAttribute(
         { 2, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset6floats });
-    vertexBuffer->StaticAllocate(flatSurface->mesh->GetIndexData());
-    vertexBuffer->StaticAllocate(flatSurface->mesh->GetVertexData(), 9);
-
-    m_renderer->AddVertexBuffer("flatsurfacebuffer", vertexBuffer);
-
-    auto cuboid = Generate::Cuboid(2, 2, 2, { 0.5f, 0.0f, 0.0f });
-    m_allObjects["cuboid"] = cuboid;
-    vertexBuffer = std::make_shared<VertexBuffer>();
-    vertexBuffer->GenerateIndexedBuffer();
-    vertexBuffer->attachedObject = cuboid;
-    unsigned int size6floats = sizeof(float) * 6;
-    // Positions
-    vertexBuffer->AddVertexAttribute(
-        { 0, 3, GL_FLOAT, GL_FALSE, size6floats, 0 });
-    // Color
-    vertexBuffer->AddVertexAttribute(
-        { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)offset3floats });
-    vertexBuffer->StaticAllocate(cuboid->mesh->GetIndexData());
-    vertexBuffer->StaticAllocate(cuboid->mesh->GetVertexData(), 6);
+    vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 6);
 
     m_renderer->AddVertexBuffer("cuboidbuffer", vertexBuffer);
 }

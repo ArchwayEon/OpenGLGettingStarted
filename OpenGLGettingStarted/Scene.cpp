@@ -2,7 +2,7 @@
 
 Scene::Scene()
 {
-	globalLight.position = { 100.0f, 100.0f, 0 };
+	globalLight.position = { 0.0f, 100.0f, 0.0f };
 	globalLight.color = { 1, 1, 1 };
 	globalLight.intensity = 0.5f;
 }
