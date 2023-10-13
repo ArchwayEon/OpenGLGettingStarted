@@ -36,9 +36,7 @@ void Renderer::Render() const
 		SetAttributeInterpretation(buffer->GetAttributes());
 		if (buffer->IsIndexed()) {
 			buffer->Select("IBO");
-			glDrawElements(
-				buffer->GetPrimitiveType(), 
-				(GLsizei)buffer->GetIndexCount(), 
+			glDrawElements(buffer->GetPrimitiveType(), (GLsizei)buffer->GetIndexCount(), 
 				GL_UNSIGNED_SHORT, 0);
 		}
 		else {
