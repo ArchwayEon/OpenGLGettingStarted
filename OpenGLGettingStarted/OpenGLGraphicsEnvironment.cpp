@@ -160,6 +160,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     auto flatSurface = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f });
     m_allObjects["flatsurface"] = flatSurface;
     auto vertexBuffer = std::make_shared<VertexBuffer>();
+    //auto vertexBuffer = m_shaders["basic3dlighting"]->GetVertexBuffer();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
     vertexBuffer->GenerateBufferId("IBO", BufferDataType::IndexData);
     vertexBuffer->SetIsIndexed(true);
@@ -184,6 +185,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     auto cuboid = Generate::Cuboid(1, 1, 1, { 1.0f, 0.0f, 0.0f });
     m_allObjects["red cube"] = cuboid;
     vertexBuffer = std::make_shared<VertexBuffer>();
+    //vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
     vertexBuffer->attachedObject = cuboid;
     // Positions
