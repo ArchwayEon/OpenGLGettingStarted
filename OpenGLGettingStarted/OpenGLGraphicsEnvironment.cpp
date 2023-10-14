@@ -187,9 +187,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     auto cuboid = Generate::Cuboid(1, 1, 1, { 1.0f, 0.0f, 0.0f });
     m_allObjects["red cube"] = cuboid;
     vertexBuffer = std::make_shared<VertexBuffer>();
-    //vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
-    //vertexBuffer->attachedObject = cuboid;
     cuboid->mesh->SetBuffer(vertexBuffer);
     // Positions
     vertexBuffer->AddVertexAttribute(
@@ -203,7 +201,6 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 6);
 
     m_allObjects["red cube"]->frame.SetPosition(0, 0.5f, 0);
-    
 
     m_renderer->AddVertexBuffer("cuboidbuffer", vertexBuffer);
 
@@ -212,7 +209,6 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
     cuboid->mesh->SetBuffer(vertexBuffer);
-    //vertexBuffer->attachedObject = cuboid;
     // Positions
     vertexBuffer->AddVertexAttribute(
         { 0, 3, GL_FLOAT, GL_FALSE, size9floats, 0 });
@@ -240,7 +236,6 @@ void OpenGLGraphicsEnvironment::LoadShaders()
 {
     CreateBasicShader();
     CreateBasic3DShader();
-    //CreateBasic3DLightingShader();
     ReadShadersFromFiles("basic3dlighting.vert.glsl", "basic3dlighting.frag.glsl");
 }
 
