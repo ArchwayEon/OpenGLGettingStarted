@@ -3,6 +3,7 @@
 
 GraphicsObject::GraphicsObject()
 {
+	m_animation = nullptr;
 }
 
 GraphicsObject::~GraphicsObject()
@@ -11,8 +12,9 @@ GraphicsObject::~GraphicsObject()
 
 void GraphicsObject::Update(double elapsedSeconds)
 {
-	double deltaDegrees = 90 * elapsedSeconds;
-	frame.Rotate((float)deltaDegrees, { 0, 1, 0 });
+	if (m_animation != nullptr) {
+		m_animation->Update(elapsedSeconds);
+	}
 }
 
 

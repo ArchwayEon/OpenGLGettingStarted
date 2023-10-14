@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include "GraphicsStructures.h"
-#include "GraphicsObject.h"
+//#include "GraphicsObject.h"
 
 struct VertexAttribute {
 	unsigned int index;
@@ -31,7 +31,7 @@ protected:
 	std::size_t m_indexCount;
 
 public:
-	std::shared_ptr<GraphicsObject> attachedObject;
+	//std::shared_ptr<GraphicsObject> attachedObject;
 
 public:
 	VertexBuffer();

@@ -26,13 +26,17 @@ void Renderer::Render() const
 	m_shader->SendUniform("uGlobalLightPosition", m_scene->globalLight.position);
 	m_shader->SendUniform("uGlobalLightColor", m_scene->globalLight.color);
 	m_shader->SendUniform("uGlobalLightIntensity", m_scene->globalLight.intensity);
-	for (const auto& element : m_bufferMap) {
-		const auto& buffer = element.second;
+	const auto& objectMap = m_scene->GetObjectMap();
+	//for (const auto& element : m_bufferMap) {
+	for (const auto& element : objectMap) {
+		//const auto& buffer = element.second;
+		const auto& object = element.second;
+		const auto& buffer = object->mesh->GetBuffer();
 		buffer->Select("VBO");
 		// Per object uniforms
-		const auto& obj = buffer->attachedObject;
-		m_shader->SendUniform("uWorld", obj->frame.orientation);
-		m_shader->SendUniform("uMaterialAmbientIntensity", obj->mesh->material.ambientIntensity);
+		//const auto& obj = buffer->attachedObject;
+		m_shader->SendUniform("uWorld", object->frame.orientation);
+		m_shader->SendUniform("uMaterialAmbientIntensity", object->mesh->material.ambientIntensity);
 		SetAttributeInterpretation(buffer->GetAttributes());
 		if (buffer->IsIndexed()) {
 			buffer->Select("IBO");

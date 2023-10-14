@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AbstractAnimation.cpp" />
     <ClCompile Include="AbstractGraphicsWindow.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Generate.cpp" />
@@ -144,6 +145,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ReferenceFrame.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="RotateAnimation.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="TextFileReader.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
@@ -156,6 +158,7 @@
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbstractAnimation.h" />
     <ClInclude Include="AbstractGraphicsWindow.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Generate.h" />
@@ -163,6 +166,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ReferenceFrame.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="RotateAnimation.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="TextFileReader.h" />
     <ClInclude Include="VertexBuffer.h" />

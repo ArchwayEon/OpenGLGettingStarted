@@ -6,6 +6,7 @@
 #include "GraphicsObject.h"
 #include "Generate.h"
 #include <iostream>
+#include "RotateAnimation.h"
 
 OpenGLGraphicsEnvironment::OpenGLGraphicsEnvironment(Logger& logger) : 
     m_logger(logger), m_majorVersion(4), m_minorVersion(6)
@@ -164,7 +165,8 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
     vertexBuffer->GenerateBufferId("IBO", BufferDataType::IndexData);
     vertexBuffer->SetIsIndexed(true);
-    vertexBuffer->attachedObject = flatSurface;
+    //vertexBuffer->attachedObject = flatSurface;
+    flatSurface->mesh->SetBuffer(vertexBuffer);
 
     unsigned int size9floats = sizeof(float) * 9;
     unsigned long long offset3floats = sizeof(float) * 3;
@@ -187,7 +189,8 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer = std::make_shared<VertexBuffer>();
     //vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
-    vertexBuffer->attachedObject = cuboid;
+    //vertexBuffer->attachedObject = cuboid;
+    cuboid->mesh->SetBuffer(vertexBuffer);
     // Positions
     vertexBuffer->AddVertexAttribute(
         { 0, 3, GL_FLOAT, GL_FALSE, size9floats, 0 });
@@ -200,7 +203,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 6);
 
     m_allObjects["red cube"]->frame.SetPosition(0, 0.5f, 0);
-    m_currentScene->AddObject("red cube", m_allObjects["red cube"]);
+    
 
     m_renderer->AddVertexBuffer("cuboidbuffer", vertexBuffer);
 
@@ -208,7 +211,8 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     m_allObjects["white cube"] = cuboid;
     vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
-    vertexBuffer->attachedObject = cuboid;
+    cuboid->mesh->SetBuffer(vertexBuffer);
+    //vertexBuffer->attachedObject = cuboid;
     // Positions
     vertexBuffer->AddVertexAttribute(
         { 0, 3, GL_FLOAT, GL_FALSE, size9floats, 0 });
@@ -223,6 +227,13 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     m_allObjects["white cube"]->frame.SetPosition(0, 0.5f, 2.5f);
 
     m_renderer->AddVertexBuffer("whitecuboidbuffer", vertexBuffer);
+
+    m_currentScene->AddObject("red cube", m_allObjects["red cube"]);
+    m_currentScene->AddObject("white cube", m_allObjects["white cube"]);
+    m_currentScene->AddObject("flatsurface", m_allObjects["flatsurface"]);
+
+    auto rotateAnimation = std::make_unique<RotateAnimation>(90.0f, glm::vec3(0, 1, 0));
+    m_allObjects["white cube"]->SetAnimation(std::move(rotateAnimation));
 }
 
 void OpenGLGraphicsEnvironment::LoadShaders()
