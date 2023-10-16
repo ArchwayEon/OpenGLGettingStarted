@@ -30,6 +30,9 @@ void OpenGLGraphicsEnvironment::Initialize()
 
     m_window->Initialize();
 
+    // Set up the window for antialiasing by using multisampling
+    glfwWindowHint(GLFW_SAMPLES, 4);
+
     bool created = m_window->Create();
     if (created == false) {
         throw "Failed to create the graphics window.";
@@ -38,6 +41,8 @@ void OpenGLGraphicsEnvironment::Initialize()
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         throw "Failed to initialize GLAD.";
     }
+
+    glEnable(GL_MULTISAMPLE);
 
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
