@@ -74,14 +74,17 @@ void OpenGLGraphicsEnvironment::Run()
     m_timer->StartTiming();
     m_window->SetupFramebufferSizeCallback();
     m_timer->StartTiming();
+    double elapsedSeconds;
     while (m_window->IsTimeToClose() == false) {
+        elapsedSeconds = m_timer->GetElapsedTimeInSeconds();
         m_window->GetWindowSize();
         m_window->CheckInputs();
         CheckKeyState();
-        //m_camera->SetupLookingForward();
+        m_camera->SetupLookingForward();
         m_camera->SetupProjectionAndView(m_window->GetAspectRatio());
         m_window->Clear();
-        m_currentScene->Update(m_timer->GetElapsedTimeInSeconds());
+        m_camera->Update(elapsedSeconds);
+        m_currentScene->Update(elapsedSeconds);
         m_renderer->Render();
         m_window->NextFrame();
     }
@@ -121,6 +124,40 @@ void OpenGLGraphicsEnvironment::CheckKeyState()
         m_camera->frame.SetPosition(-3.0f, -3.0f, -5.0f);
         return;
     }
+
+    if (m_window->GetKeyState(GLFW_KEY_D) == GLFW_PRESS) {
+        m_camera->SetState(CameraState::TurningRight);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_A) == GLFW_PRESS) {
+        m_camera->SetState(CameraState::TurningLeft);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_W) == GLFW_PRESS) {
+        m_camera->SetState(CameraState::MovingForward);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_S) == GLFW_PRESS) {
+        m_camera->SetState(CameraState::MovingBackward);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_UP) == GLFW_PRESS) {
+        m_camera->SetState(CameraState::MovingUp);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_DOWN) == GLFW_PRESS) {
+        m_camera->SetState(CameraState::MovingDown);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_LEFT) == GLFW_PRESS) {
+        m_camera->SetState(CameraState::StrafingLeft);
+        return;
+    }
+    if (m_window->GetKeyState(GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        m_camera->SetState(CameraState::StrafingRight);
+        return;
+    }
+    m_camera->SetState(CameraState::NotMoving);
 }
 
 void OpenGLGraphicsEnvironment::LoadObjects()

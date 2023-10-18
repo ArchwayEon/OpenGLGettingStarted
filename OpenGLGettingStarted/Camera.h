@@ -2,11 +2,19 @@
 #include "ReferenceFrame.h"
 #include <glm\glm.hpp>
 
+
+enum class CameraState {
+    NotMoving, MovingForward, MovingBackward, MovingUp, MovingDown,
+    TurningRight, TurningLeft,
+    StrafingRight, StrafingLeft
+};
+
 class Camera
 {
 protected:
     glm::mat4 m_projection, m_view;
     float m_aspectRatio;
+    CameraState m_state;
 
 public:
     float fieldOfView, nearPlane, farPlane;
@@ -22,4 +30,6 @@ public:
     virtual const glm::mat4& GetView() const { return m_view; }
     virtual void SetupLookingForward();
     virtual void SetupProjectionAndView(float aspectRatio);
+    virtual void SetState(CameraState state) { m_state = state; }
+   
 };
