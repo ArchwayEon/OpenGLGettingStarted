@@ -5,7 +5,7 @@ Camera::Camera() :
 	fieldOfView(60.0f), m_aspectRatio(1.0f),
 	nearPlane(0.1f), farPlane(50.0f), frame(),
 	target({ 0.0f, 0.0f, 0.0f }),
-	m_projection(1.0f), m_view(1.0f)
+	m_projection(1.0f), m_view(1.0f), m_state(CameraState::NotMoving)
 {
 	frame.SetPosition(0.0f, 0.0f, 5.0f);
 }

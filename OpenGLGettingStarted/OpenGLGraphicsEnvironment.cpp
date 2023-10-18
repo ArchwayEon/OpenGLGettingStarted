@@ -66,7 +66,7 @@ void OpenGLGraphicsEnvironment::Initialize()
     LoadShaders();
     LoadObjects();
 
-    m_camera->frame.SetPosition(3.0f, 3.0f, 5.0f);
+    m_camera->frame.SetPosition(0.0f, 2.0f, 6.0f);
 }
 
 void OpenGLGraphicsEnvironment::Run()
