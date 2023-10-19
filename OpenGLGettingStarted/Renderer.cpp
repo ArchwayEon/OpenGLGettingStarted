@@ -34,7 +34,7 @@ void Renderer::Render() const
 		// Per object uniforms
 		m_shader->SendUniform("uWorld", object->frame.orientation);
 		m_shader->SendUniform("uMaterialAmbientIntensity", object->mesh->material.ambientIntensity);
-		SetAttributeInterpretation(buffer->GetAttributes());
+		SetAttributeInterpretation(buffer->GetAttributeMap());
 		if (buffer->IsIndexed()) {
 			buffer->Select("IBO");
 			glDrawElements(buffer->GetPrimitiveType(), (GLsizei)buffer->GetIndexCount(), 
@@ -46,10 +46,10 @@ void Renderer::Render() const
 	}
 }
 
-void Renderer::SetAttributeInterpretation(const std::vector<VertexAttribute>& attributes) const
+void Renderer::SetAttributeInterpretation(const std::unordered_map<std::string, VertexAttribute>& attributeMap) const
 {
-	for (unsigned int i = 0; i < attributes.size(); i++) {
-		const auto& attr = attributes[i];
+	for (const std::pair<const std::string, VertexAttribute>& item : attributeMap){
+		const auto& attr = item.second;
 		glEnableVertexAttribArray(attr.index);
 		glVertexAttribPointer(
 			attr.index, attr.numberOfComponents, attr.type,

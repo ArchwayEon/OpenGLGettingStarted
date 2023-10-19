@@ -27,6 +27,6 @@ public:
 	void Render() const;
 
 protected:
-	void SetAttributeInterpretation(const std::vector<VertexAttribute>& attributes) const;
+	void SetAttributeInterpretation(const std::unordered_map<std::string, VertexAttribute>& attributeMap) const;
 };
 

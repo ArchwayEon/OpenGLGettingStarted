@@ -1,9 +1,9 @@
 #include "VertexBuffer.h"
 #include <glad/glad.h>
 
-VertexBuffer::VertexBuffer() : 
+VertexBuffer::VertexBuffer(unsigned int numberOfElementsPerVertex) :
 	m_vboId(0), m_iboId(0), m_isIndexed(false), m_primitiveType(GL_TRIANGLES), 
-	m_vertexCount(0), m_indexCount(0)
+	m_vertexCount(0), m_indexCount(0), m_numberOfElementsPerVertex(numberOfElementsPerVertex)
 {
 	
 }
@@ -39,14 +39,22 @@ void VertexBuffer::Unselect() const
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void VertexBuffer::AddVertexAttribute(const VertexAttribute& attr)
+void VertexBuffer::AddVertexAttribute(const std::string& name, unsigned int index, unsigned int numberOfElements)
 {
-	m_attributes.push_back(attr);
+	unsigned int bytesToNext = (unsigned int)GetVertexSizeInBytes();
+	unsigned long long offsetBytes = GetOffsetInBytes(index * numberOfElements);
+	VertexAttribute attr = { index, numberOfElements, GL_FLOAT, GL_FALSE, bytesToNext, (void*)offsetBytes };
+	m_attributeMap[name] = attr;
 }
 
-void VertexBuffer::StaticAllocate(const std::string& bufferName, std::vector<float> vertexData, int numberOfElementsInAVertex)
+void VertexBuffer::AddVertexAttribute(const std::string& name, const VertexAttribute& attr)
 {
-	m_vertexCount = vertexData.size() / numberOfElementsInAVertex;
+	m_attributeMap[name] = attr;
+}
+
+void VertexBuffer::StaticAllocate(const std::string& bufferName, std::vector<float> vertexData)
+{
+	m_vertexCount = vertexData.size() / m_numberOfElementsPerVertex;
 	unsigned long long bytesToAllocate = vertexData.size() * sizeof(float);
 	Select(bufferName);
 	glBufferData(GL_ARRAY_BUFFER, bytesToAllocate, vertexData.data(), GL_STATIC_DRAW);
@@ -55,8 +63,8 @@ void VertexBuffer::StaticAllocate(const std::string& bufferName, std::vector<flo
 
 void VertexBuffer::DisableAttributes() const
 {
-	for (unsigned int i = 0; i < m_attributes.size(); i++) {
-		const auto& attr = m_attributes[i];
+	for (const std::pair<const std::string, VertexAttribute>& item : m_attributeMap) {
+		const auto& attr = item.second;
 		glDisableVertexAttribArray(attr.index);
 	}
 }
