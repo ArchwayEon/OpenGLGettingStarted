@@ -30,5 +30,15 @@ struct Light {
 	float intensity;
 };
 
+struct PCNVertex {
+	Position position;
+	RGB color;
+	Direction normal;
+};
+
+enum class ShadingType {
+	Flat_Shading, Smooth_Shading
+};
+
 
 #endif

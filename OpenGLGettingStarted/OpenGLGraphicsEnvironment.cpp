@@ -240,7 +240,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     // Normal
     vertexBuffer->AddVertexAttribute(
         { 2, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset6floats });
-    vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 6);
+    vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 9);
 
     m_allObjects["red cube"]->frame.SetPosition(0, 0.5f, 0);
 
@@ -250,7 +250,6 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     m_allObjects["white cube"] = cuboid;
     vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
-    cuboid->mesh->SetBuffer(vertexBuffer);
     // Positions
     vertexBuffer->AddVertexAttribute(
         { 0, 3, GL_FLOAT, GL_FALSE, size9floats, 0 });
@@ -260,18 +259,39 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     // Normal
     vertexBuffer->AddVertexAttribute(
         { 2, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset6floats });
-    vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 6);
+    vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData(), 9);
 
-    m_allObjects["white cube"]->frame.SetPosition(0, 0.5f, 2.5f);
-
+    cuboid->mesh->SetBuffer(vertexBuffer);
     m_renderer->AddVertexBuffer("whitecuboidbuffer", vertexBuffer);
+
+    auto cylinder = Generate::Cylinder(0.25f, 2.0f, 16, 16, { 1, 1, 0 }, ShadingType::Smooth_Shading);
+    m_allObjects["yellow cylinder"] = cylinder;
+    vertexBuffer = std::make_shared<VertexBuffer>();
+    vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
+    // Positions
+    vertexBuffer->AddVertexAttribute(
+        { 0, 3, GL_FLOAT, GL_FALSE, size9floats, 0 });
+    // Color
+    vertexBuffer->AddVertexAttribute(
+        { 1, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset3floats });
+    // Normal
+    vertexBuffer->AddVertexAttribute(
+        { 2, 3, GL_FLOAT, GL_FALSE, size9floats, (void*)offset6floats });
+    vertexBuffer->StaticAllocate("VBO", cylinder->mesh->GetVertexData(), 9);
+
+    cylinder->mesh->SetBuffer(vertexBuffer);
+    m_renderer->AddVertexBuffer("yellowcylinderbuffer", vertexBuffer);
 
     m_currentScene->AddObject("red cube", m_allObjects["red cube"]);
     m_currentScene->AddObject("white cube", m_allObjects["white cube"]);
+    m_currentScene->AddObject("yellow cylinder", m_allObjects["yellow cylinder"]);
     m_currentScene->AddObject("flatsurface", m_allObjects["flatsurface"]);
 
     auto rotateAnimation = std::make_unique<RotateAnimation>(90.0f, glm::vec3(0, 1, 0));
     m_allObjects["white cube"]->SetAnimation(std::move(rotateAnimation));
+    m_allObjects["white cube"]->frame.SetPosition(0, 0.5f, 2.5f);
+
+    m_allObjects["yellow cylinder"]->frame.SetPosition(2.0, 1.0f, 0.0f);
 }
 
 void OpenGLGraphicsEnvironment::LoadShaders()
