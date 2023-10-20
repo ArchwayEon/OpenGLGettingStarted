@@ -7,6 +7,7 @@
 #include "Generate.h"
 #include <iostream>
 #include "RotateAnimation.h"
+#include "RotateAboutPivotAnimation.h"
 
 OpenGLGraphicsEnvironment::OpenGLGraphicsEnvironment(Logger& logger) : 
     m_logger(logger), m_majorVersion(4), m_minorVersion(6)
@@ -262,6 +263,12 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     m_allObjects["white cube"]->frame.SetPosition(0, 0.5f, 2.5f);
     m_allObjects["red cube"]->frame.SetPosition(0, 0.5f, 0);
     m_allObjects["yellow cylinder"]->frame.SetPosition(2.0, 1.0f, 0.0f);
+    //m_allObjects["yellow cylinder"]->frame.RotateAboutLocalPivot(glm::vec3(0, 1, 0), 45, glm::vec3(1, 0, 0));
+    auto rotateAboutPivotAnimation = std::make_unique<RotateAboutPivotAnimation>(glm::vec3(0, 0.9f, 0), 90.0f, glm::vec3(1, 0, 0));
+    m_allObjects["yellow cylinder"]->SetAnimation(std::move(rotateAboutPivotAnimation));
+
+    rotateAboutPivotAnimation = std::make_unique<RotateAboutPivotAnimation>(glm::vec3(-0.5f, 0.5f, 0.5f), 180.0f, glm::vec3(0, 0, 1));
+    m_allObjects["red cube"]->SetAnimation(std::move(rotateAboutPivotAnimation));
 }
 
 void OpenGLGraphicsEnvironment::LoadShaders()

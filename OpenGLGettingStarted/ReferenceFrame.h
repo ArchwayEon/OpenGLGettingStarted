@@ -25,6 +25,7 @@ public:
     void Reset() { orientation = glm::mat4(1.0f); }
     void Rotate(float degrees, const glm::vec3& axis);
     void RotateWorld(float degrees, const glm::vec3& axis);
+    void RotateAboutLocalPivot(const glm::vec3& pivotPoint, float degrees, const glm::vec3& axis);
     void Scale(float ratio);
     void Move(const glm::vec3& vector);
     void PointAt(float x, float y, float z);

@@ -13,6 +13,23 @@ void ReferenceFrame::RotateWorld(float degrees, const glm::vec3& axis)
 	orientation = mat * orientation;
 }
 
+void ReferenceFrame::RotateAboutLocalPivot(const glm::vec3& pivotPoint, float degrees, const glm::vec3& axis)
+{
+	glm::mat4 toPivot(1.0f);
+	toPivot = glm::translate(toPivot, pivotPoint);
+
+	glm::mat4 rotate(1.0f);
+	rotate = glm::rotate(rotate, glm::radians(degrees), axis);
+
+	glm::mat4 toOrigin(1.0f);
+	toOrigin = glm::translate(toOrigin, -pivotPoint);
+
+	glm::mat4 transform(1.0f);
+	transform = toPivot * rotate * toOrigin;
+
+	orientation = orientation * transform;
+}
+
 void ReferenceFrame::Scale(float ratio)
 {
 	glm::vec3 sv(ratio, ratio, ratio);
