@@ -224,7 +224,6 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->AddVertexAttribute("Color", 1, 3);
     vertexBuffer->AddVertexAttribute("Normal", 2, 3);
     vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData());
-
     cuboid->mesh->SetBuffer(vertexBuffer);
     m_renderer->AddVertexBuffer("cuboidbuffer", vertexBuffer);
 
@@ -236,7 +235,6 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->AddVertexAttribute("Color", 1, 3);
     vertexBuffer->AddVertexAttribute("Normal", 2, 3);
     vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData());
-
     cuboid->mesh->SetBuffer(vertexBuffer);
     m_renderer->AddVertexBuffer("whitecuboidbuffer", vertexBuffer);
 
@@ -248,14 +246,28 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->AddVertexAttribute("Color", 1, 3);
     vertexBuffer->AddVertexAttribute("Normal", 2, 3);
     vertexBuffer->StaticAllocate("VBO", cylinder->mesh->GetVertexData());
-
     cylinder->mesh->SetBuffer(vertexBuffer);
     m_renderer->AddVertexBuffer("yellowcylinderbuffer", vertexBuffer);
+
+    auto lineArrow = Generate::LineArrow(1.0f, {0, 0, 1});
+    m_allObjects["line arrow 1"] = lineArrow;
+    vertexBuffer = std::make_shared<VertexBuffer>(6);
+    vertexBuffer->SetPrimitiveType(GL_LINES);
+    vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
+    vertexBuffer->GenerateBufferId("IBO", BufferDataType::IndexData);
+    vertexBuffer->SetIsIndexed(true);
+    vertexBuffer->AddVertexAttribute("Position", 0, 3);
+    vertexBuffer->AddVertexAttribute("Color", 1, 3);
+    vertexBuffer->StaticAllocate("VBO", lineArrow->mesh->GetVertexData());
+    vertexBuffer->StaticAllocate("IBO", lineArrow->mesh->GetIndexData());
+    lineArrow->mesh->SetBuffer(vertexBuffer);
+    m_renderer->AddVertexBuffer("linearrowbuffer", vertexBuffer);
 
     m_currentScene->AddObject("red cube", m_allObjects["red cube"]);
     m_currentScene->AddObject("white cube", m_allObjects["white cube"]);
     m_currentScene->AddObject("yellow cylinder", m_allObjects["yellow cylinder"]);
     m_currentScene->AddObject("flatsurface", m_allObjects["flatsurface"]);
+    m_currentScene->AddObject("line arrow 1", m_allObjects["line arrow 1"]);
 
     auto rotateAnimation = std::make_unique<RotateAnimation>(90.0f, glm::vec3(0, 1, 0));
     m_allObjects["white cube"]->SetAnimation(std::move(rotateAnimation));
@@ -263,6 +275,7 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     m_allObjects["white cube"]->frame.SetPosition(0, 0.5f, 2.5f);
     m_allObjects["red cube"]->frame.SetPosition(0, 0.5f, 0);
     m_allObjects["yellow cylinder"]->frame.SetPosition(2.0, 1.0f, 0.0f);
+    m_allObjects["line arrow 1"]->frame.SetPosition(0.0, 3.0f, 0.0f);
     //m_allObjects["yellow cylinder"]->frame.RotateAboutLocalPivot(glm::vec3(0, 1, 0), 45, glm::vec3(1, 0, 0));
     auto rotateAboutPivotAnimation = std::make_unique<RotateAboutPivotAnimation>(glm::vec3(0, 0.9f, 0), 90.0f, glm::vec3(1, 0, 0));
     m_allObjects["yellow cylinder"]->SetAnimation(std::move(rotateAboutPivotAnimation));

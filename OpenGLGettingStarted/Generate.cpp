@@ -1,5 +1,31 @@
 #include "Generate.h"
 
+std::shared_ptr<GraphicsObject> Generate::LineArrow(float length, RGB color)
+{
+	auto lineArrow = std::make_shared<GraphicsObject>();
+
+	float oneTenthLength = length / 10;
+	float nineTenthLength = length - oneTenthLength;
+
+	Position p0 = { 0.0f, 0.0f, 0.0f };
+	Position p1 = { length, 0.0f,  0.0f };
+	Position p2 = { nineTenthLength, oneTenthLength,  0 };
+	Position p3 = { nineTenthLength, -oneTenthLength,  0 };
+
+
+	std::unique_ptr<Mesh> mesh = std::make_unique<Mesh>();
+	mesh->AddVertex(p0, color);
+	mesh->AddVertex(p1, color);
+	mesh->AddVertex(p2, color);
+	mesh->AddVertex(p3, color);
+	mesh->AddIndexData(6, 0, 1, 1, 2, 1, 3);
+	mesh->material.ambientIntensity = 1.0f;
+
+	lineArrow->mesh = std::move(mesh);
+
+	return lineArrow;
+}
+
 std::shared_ptr<GraphicsObject> Generate::FlatSurface(float width, float depth, RGB color)
 {
 	auto flatSurface = std::make_shared<GraphicsObject>();
