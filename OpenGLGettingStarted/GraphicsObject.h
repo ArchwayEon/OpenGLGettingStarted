@@ -19,7 +19,7 @@ public:
     virtual ~GraphicsObject();
     void SetAnimation(std::unique_ptr<AbstractAnimation> animation) {
         m_animation = std::move(animation);
-        m_animation->SetObject(std::shared_ptr<GraphicsObject>(this));
+        m_animation->SetObject(this);
     }
     void Update(double elapsedSeconds);
 };
