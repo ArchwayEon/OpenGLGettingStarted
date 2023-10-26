@@ -163,46 +163,12 @@ void OpenGLGraphicsEnvironment::CheckKeyState()
 
 void OpenGLGraphicsEnvironment::LoadObjects()
 {
-    
-    //m_currentScene->camera = m_camera;
-
-    //m_allObjects["triangle"] = std::make_shared<GraphicsObject>();
-    //m_allObjects["triangle"]->vertexArray = std::make_shared<VertexArray>();
-    //
-
-    //std::unique_ptr<Mesh> triangleMesh = std::make_unique<Mesh>();
-    //triangleMesh->AddVertexData(3, 0.0f, 0.5f, 0.0f);
-    //triangleMesh->AddVertexData(3, 1.0f, 0.0f, 0.0f);
-    //triangleMesh->AddVertexData(3, -0.5f, -0.5f, 0.0f);
-    //triangleMesh->AddVertexData(3, 0.0f, 0.0f, 1.0f);
-    //triangleMesh->AddVertexData(3, 0.5f, -0.5f, 0.0f);
-    //triangleMesh->AddVertexData(3, 0.0f, 1.0f, 0.0f);
-    //triangleMesh->SetNumberOfVertices(3);
-    //triangleMesh->vertexBuffer = std::make_unique<VertexBuffer>();
-    //triangleMesh->vertexBuffer->vertexArray = m_allObjects["triangle"]->vertexArray;
-    //unsigned int size6floats = sizeof(float) * 6;
-    //unsigned long long size3floats = sizeof(float) * 3;
-    //// Positions
-    //triangleMesh->vertexBuffer->AddVertexAttribute(
-    //    { 0, 3, GL_FLOAT, GL_FALSE, size6floats, 0 });
-    //// Color
-    //triangleMesh->vertexBuffer->AddVertexAttribute(
-    //    { 1, 3, GL_FLOAT, GL_FALSE, size6floats, (void*)size3floats });
-
-    //triangleMesh->AddTriangleIndices(0, 1, 2);
-    //triangleMesh->indexBuffer = std::make_unique<IndexBuffer>();
-
-    //m_allObjects["triangle"]->SetMesh(std::move(triangleMesh));
-    //m_allObjects["triangle"]->AllocateStaticBuffers();
-    //m_allObjects["triangle"]->shader = m_shaders["basic3d"];
-    //m_currentScene->AddObject("triangle", m_allObjects["triangle"]);
 
     m_currentScene = std::make_shared<Scene>();
     m_renderer->SetScene(m_currentScene);
     m_renderer->SetShader(m_shaders["basic3dlighting"]);
 
-    auto flatSurface = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f });
-    m_allObjects["flatsurface"] = flatSurface;
+    auto flatSurfaceMesh = Generate::FlatSurface(10, 10, { 0.0f, 0.5f, 0.0f });
     auto vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
     vertexBuffer->GenerateBufferId("IBO", BufferDataType::IndexData);
@@ -210,47 +176,54 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->AddVertexAttribute("Position", 0, 3);
     vertexBuffer->AddVertexAttribute("Color", 1, 3);
     vertexBuffer->AddVertexAttribute("Normal", 2, 3);
-    vertexBuffer->StaticAllocate("IBO", flatSurface->mesh->GetIndexData());
-    vertexBuffer->StaticAllocate("VBO", flatSurface->mesh->GetVertexData());
-
-    flatSurface->mesh->SetBuffer(vertexBuffer);
+    vertexBuffer->StaticAllocate("IBO", flatSurfaceMesh->GetIndexData());
+    vertexBuffer->StaticAllocate("VBO", flatSurfaceMesh->GetVertexData());
+    flatSurfaceMesh->SetBuffer(vertexBuffer);
     m_renderer->AddVertexBuffer("flatsurfacebuffer", vertexBuffer);
 
-    auto cuboid = Generate::Cuboid(1, 1, 1, { 1.0f, 0.0f, 0.0f });
-    m_allObjects["red cube"] = cuboid;
+    m_allObjects["flatsurface"] = std::make_shared<GraphicsObject>();
+    m_allObjects["flatsurface"]->mesh = std::move(flatSurfaceMesh);
+
+    auto cuboidMesh = Generate::Cuboid(1, 1, 1, { 1.0f, 0.0f, 0.0f });
     vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
     vertexBuffer->AddVertexAttribute("Position", 0, 3);
     vertexBuffer->AddVertexAttribute("Color", 1, 3);
     vertexBuffer->AddVertexAttribute("Normal", 2, 3);
-    vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData());
-    cuboid->mesh->SetBuffer(vertexBuffer);
+    vertexBuffer->StaticAllocate("VBO", cuboidMesh->GetVertexData());
+    cuboidMesh->SetBuffer(vertexBuffer);
     m_renderer->AddVertexBuffer("cuboidbuffer", vertexBuffer);
 
-    cuboid = Generate::Cuboid(0.5f, 0.5f, 0.5f, { 1, 1, 1 });
-    m_allObjects["white cube"] = cuboid;
+    m_allObjects["red cube"] = std::make_shared<GraphicsObject>();
+    m_allObjects["red cube"]->mesh = std::move(cuboidMesh);
+
+    cuboidMesh = Generate::Cuboid(0.5f, 0.5f, 0.5f, { 1, 1, 1 });
     vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
     vertexBuffer->AddVertexAttribute("Position", 0, 3);
     vertexBuffer->AddVertexAttribute("Color", 1, 3);
     vertexBuffer->AddVertexAttribute("Normal", 2, 3);
-    vertexBuffer->StaticAllocate("VBO", cuboid->mesh->GetVertexData());
-    cuboid->mesh->SetBuffer(vertexBuffer);
+    vertexBuffer->StaticAllocate("VBO", cuboidMesh->GetVertexData());
+    cuboidMesh->SetBuffer(vertexBuffer);
     m_renderer->AddVertexBuffer("whitecuboidbuffer", vertexBuffer);
 
-    auto cylinder = Generate::Cylinder(0.25f, 2.0f, 16, 16, { 1, 1, 0 }, ShadingType::Smooth_Shading);
-    m_allObjects["yellow cylinder"] = cylinder;
+    m_allObjects["white cube"] = std::make_shared<GraphicsObject>();
+    m_allObjects["white cube"]->mesh = std::move(cuboidMesh);
+
+    auto cylinderMesh = Generate::Cylinder(0.25f, 2.0f, 16, 16, { 1, 1, 0 }, ShadingType::Smooth_Shading);
     vertexBuffer = std::make_shared<VertexBuffer>();
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
     vertexBuffer->AddVertexAttribute("Position", 0, 3);
     vertexBuffer->AddVertexAttribute("Color", 1, 3);
     vertexBuffer->AddVertexAttribute("Normal", 2, 3);
-    vertexBuffer->StaticAllocate("VBO", cylinder->mesh->GetVertexData());
-    cylinder->mesh->SetBuffer(vertexBuffer);
+    vertexBuffer->StaticAllocate("VBO", cylinderMesh->GetVertexData());
+    cylinderMesh->SetBuffer(vertexBuffer);
     m_renderer->AddVertexBuffer("yellowcylinderbuffer", vertexBuffer);
 
-    auto lineArrow = Generate::LineArrow(1.0f, {0, 0, 1});
-    m_allObjects["line arrow 1"] = lineArrow;
+    m_allObjects["yellow cylinder"] = std::make_shared<GraphicsObject>();
+    m_allObjects["yellow cylinder"]->mesh = std::move(cylinderMesh);
+
+    auto lineArrowMesh = Generate::LineArrow(1.0f, {0, 0, 1});
     vertexBuffer = std::make_shared<VertexBuffer>(6);
     vertexBuffer->SetPrimitiveType(GL_LINES);
     vertexBuffer->GenerateBufferId("VBO", BufferDataType::VertexData);
@@ -258,10 +231,13 @@ void OpenGLGraphicsEnvironment::LoadObjects()
     vertexBuffer->SetIsIndexed(true);
     vertexBuffer->AddVertexAttribute("Position", 0, 3);
     vertexBuffer->AddVertexAttribute("Color", 1, 3);
-    vertexBuffer->StaticAllocate("VBO", lineArrow->mesh->GetVertexData());
-    vertexBuffer->StaticAllocate("IBO", lineArrow->mesh->GetIndexData());
-    lineArrow->mesh->SetBuffer(vertexBuffer);
+    vertexBuffer->StaticAllocate("VBO", lineArrowMesh->GetVertexData());
+    vertexBuffer->StaticAllocate("IBO", lineArrowMesh->GetIndexData());
+    lineArrowMesh->SetBuffer(vertexBuffer);
     m_renderer->AddVertexBuffer("linearrowbuffer", vertexBuffer);
+
+    m_allObjects["line arrow 1"] = std::make_shared<GraphicsObject>();
+    m_allObjects["line arrow 1"]->mesh = std::move(lineArrowMesh);
 
     m_currentScene->AddObject("red cube", m_allObjects["red cube"]);
     m_currentScene->AddObject("white cube", m_allObjects["white cube"]);

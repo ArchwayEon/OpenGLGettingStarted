@@ -1,8 +1,8 @@
 #include "Generate.h"
 
-std::shared_ptr<GraphicsObject> Generate::LineArrow(float length, RGB color)
+std::unique_ptr<Mesh> Generate::LineArrow(float length, RGB color)
 {
-	auto lineArrow = std::make_shared<GraphicsObject>();
+	//auto lineArrow = std::make_shared<GraphicsObject>();
 
 	float oneTenthLength = length / 10;
 	float nineTenthLength = length - oneTenthLength;
@@ -21,14 +21,14 @@ std::shared_ptr<GraphicsObject> Generate::LineArrow(float length, RGB color)
 	mesh->AddIndexData(6, 0, 1, 1, 2, 1, 3);
 	mesh->material.ambientIntensity = 1.0f;
 
-	lineArrow->mesh = std::move(mesh);
+	//lineArrow->mesh = std::move(mesh);
 
-	return lineArrow;
+	return mesh;
 }
 
-std::shared_ptr<GraphicsObject> Generate::FlatSurface(float width, float depth, RGB color)
+std::unique_ptr<Mesh> Generate::FlatSurface(float width, float depth, RGB color)
 {
-	auto flatSurface = std::make_shared<GraphicsObject>();
+	//auto flatSurface = std::make_shared<GraphicsObject>();
 
 	float halfWidth = width / 2;
 	float halfDepth = depth / 2;
@@ -48,14 +48,14 @@ std::shared_ptr<GraphicsObject> Generate::FlatSurface(float width, float depth, 
 	mesh->AddTriangleIndices(0, 1, 2);
 	mesh->AddTriangleIndices(2, 3, 0);
 
-	flatSurface->mesh = std::move(mesh);
+	//flatSurface->mesh = std::move(mesh);
 
-	return flatSurface;
+	return mesh;
 }
 
-std::shared_ptr<GraphicsObject> Generate::Cuboid(float width, float height, float depth, RGB color)
+std::unique_ptr<Mesh> Generate::Cuboid(float width, float height, float depth, RGB color)
 {
-	auto cuboid = std::make_shared<GraphicsObject>();
+	//auto cuboid = std::make_shared<GraphicsObject>();
 
 	float halfWidth = width / 2;
 	float halfDepth = depth / 2;
@@ -121,14 +121,14 @@ std::shared_ptr<GraphicsObject> Generate::Cuboid(float width, float height, floa
 	mesh->AddVertex(p5, color, normal);
 	mesh->AddVertex(p6, color, normal);
 
-	cuboid->mesh = std::move(mesh);
+	//cuboid->mesh = std::move(mesh);
 
-	return cuboid;
+	return mesh;
 }
 
-std::shared_ptr<GraphicsObject> Generate::Cylinder(float radius, float height, int slices, int stacks, RGB color, ShadingType shadingType)
+std::unique_ptr<Mesh> Generate::Cylinder(float radius, float height, int slices, int stacks, RGB color, ShadingType shadingType)
 {
-	auto cylinder = std::make_shared<GraphicsObject>();
+	//auto cylinder = std::make_shared<GraphicsObject>();
 	float sliceStep = 360.0f / slices;
 	float halfHeight = height / 2;
 	float tHeight = 1.0f / stacks;
@@ -166,7 +166,7 @@ std::shared_ptr<GraphicsObject> Generate::Cylinder(float radius, float height, i
 	// |  \|
 	// V2--V3
 	// Generate the middle
-	PCNVertex V1, V2, V3, V4;
+	PCNVertex V1{}, V2{}, V3{}, V4{};
 	glm::vec3 VA, VB, VC, VD;
 	float y = halfHeight;
 	float stackHeight = height / stacks;
@@ -275,6 +275,6 @@ std::shared_ptr<GraphicsObject> Generate::Cylinder(float radius, float height, i
 	}
 
 
-	cylinder->mesh = std::move(mesh);
-	return cylinder;
+	//cylinder->mesh = std::move(mesh);
+	return mesh;
 }
