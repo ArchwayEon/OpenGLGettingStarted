@@ -163,7 +163,6 @@ void OpenGLGraphicsEnvironment::CheckKeyState()
 
 void OpenGLGraphicsEnvironment::LoadObjects()
 {
-
     m_currentScene = std::make_shared<Scene>();
     m_renderer->SetScene(m_currentScene);
     m_renderer->SetShader(m_shaders["basic3dlighting"]);
